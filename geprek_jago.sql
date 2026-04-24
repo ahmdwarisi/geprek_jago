@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Waktu pembuatan: 23 Apr 2026 pada 13.51
+-- Waktu pembuatan: 24 Apr 2026 pada 07.08
 -- Versi server: 8.0.30
 -- Versi PHP: 8.1.10
 
@@ -29,18 +29,16 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `admin` (
   `id_admin` int NOT NULL,
-  `nama` varchar(100) DEFAULT NULL,
   `email` varchar(100) DEFAULT NULL,
-  `password` varchar(255) DEFAULT NULL,
-  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP
+  `password` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data untuk tabel `admin`
 --
 
-INSERT INTO `admin` (`id_admin`, `nama`, `email`, `password`, `created_at`) VALUES
-(1, 'Admin Geprek', 'geprekjago@gmail.com', '$2y$10$examplehash', '2026-04-23 12:22:59');
+INSERT INTO `admin` (`id_admin`, `email`, `password`) VALUES
+(1, 'halo@geprekjago.com', '$2y$10$Vf.Bp74kT9hVNGRxtTDlEOA4Z9hnD/COK6enyIN4ULN5BM.dZnMQu');
 
 -- --------------------------------------------------------
 
@@ -78,11 +76,7 @@ CREATE TABLE `menu` (
 --
 
 INSERT INTO `menu` (`id_menu`, `nama_menu`, `deskripsi`, `harga`, `gambar`, `kategori`, `stok`, `created_at`) VALUES
-(1, 'Ayam Geprek Original', 'Ayam geprek sambal pedas', 15000, 'ayam1.jpg', 'Ayam', 50, '2026-04-23 12:22:59'),
-(2, 'Ayam Geprek Keju', 'Ayam geprek + keju lumer', 18000, 'ayam2.jpg', 'Ayam', 40, '2026-04-23 12:22:59'),
-(3, 'Ayam Geprek Mozzarella', 'Ayam geprek + mozzarella', 20000, 'ayam3.jpg', 'Ayam', 30, '2026-04-23 12:22:59'),
-(4, 'Es Teh', 'Minuman segar', 5000, 'esteh.jpg', 'Minuman', 100, '2026-04-23 12:22:59'),
-(5, 'Es Jeruk', 'Jeruk segar dingin', 7000, 'esjeruk.jpg', 'Minuman', 80, '2026-04-23 12:22:59');
+(1, 'Paket Geprek Jumbo', 'ini lagi coba aja ya', 10000, '1777012180_69eb0dd46900c.avif', 'Makanan', 50, '2026-04-24 06:29:40');
 
 -- --------------------------------------------------------
 
@@ -197,7 +191,7 @@ ALTER TABLE `keranjang`
 -- AUTO_INCREMENT untuk tabel `menu`
 --
 ALTER TABLE `menu`
-  MODIFY `id_menu` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id_menu` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT untuk tabel `orders`
