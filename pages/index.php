@@ -4,7 +4,7 @@
     <!-- Hero Section -->
     <section class="hero">
       <div class="hero-bg">
-        <img alt="Hero Geprek" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA8N3_WQZYnVKGR6e7gUqHHsi2Tnm4twL1_9EHPKeFemKZ5JDxC7kLnzyVbOw3IhjhBz3EzXQBj_VTooCYX3HKAeFNf1o2KgR0Ttf5ONklmUsOfkVbzsqui40Tjiw2LdB6xs9gNrhtefaVA5uqzjU3rnZL6B50W3_75csGGgat-WqyJynCYNGLn_8hDczAqkAOELEZRcUTrJCQnObyr2onUxPHXipNqpWfe8epbglWsuN7thjW0GDZO2Y20JHezVD7s8eRiZYFku5g">
+        <img alt="Hero Geprek" src="../assets/img/foto-sampul-baru.jpg">
       </div>
       <div class="container hero-content grid-2 items-center">
         <div>
@@ -23,7 +23,7 @@
           </div>
         </div>
         <div class="hero-img-wrap">
-          <img alt="Sajian Ayam Geprek" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCZyLbrNq-tb4fu7IT38x1c6VgRemG283UcRK4oJcVfJ2b05qyNkyp4r_d6SjpYWAzHNgSOLm7zck9kohsBqJf3Jq-yUTEacXKelvEwP7LAEWLqvHJW20VivnRG8Y4kD58NMoRXmPGtR47qZ3fsZirxu6E_7at3WIJBNYXWnHRGb1qFkmA-sy2BsrThrg_TfpxoZYgnXo3jC5PS1NG9ptthDSKPkjS2KNmex9vokwdG0G3ttY8WzaTV6JAahwZj66LYuCDNFPNHHDU">
+          <img alt="Sajian Ayam Geprek" src="../assets/img/logo.jpg">
         </div>
       </div>
     </section>
@@ -61,9 +61,13 @@
                 <p class="menu-card-desc"><?= htmlspecialchars($row['deskripsi']) ?></p>
                 <div class="menu-card-footer">
                   <span class="menu-price">Rp <?= number_format($row['harga'], 0, ',', '.') ?></span>
-                  <button class="btn-add" <?= ($row['stok'] <= 0) ? 'disabled title="Stok Habis"' : '' ?>>
-                    <span class="material-symbols-outlined">add</span>
-                  </button>
+                  <form action="../process/cart_action.php" method="POST" class="form-add-to-cart" style="margin: 0;">
+                      <input type="hidden" name="id_menu" value="<?= $row['id_menu'] ?>">
+                      <input type="hidden" name="action" value="add">
+                      <button type="submit" class="btn-add" title="Tambah ke Keranjang">
+                        <span class="material-symbols-outlined">add</span>
+                      </button>
+                  </form>
                 </div>
               </div>
             </div>
@@ -158,5 +162,62 @@
       </div>
     </section>
   </main>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const cartForms = document.querySelectorAll('.form-add-to-cart');
+        const cartBadge = document.querySelector('.cart-badge');
+
+        cartForms.forEach(form => {
+            form.addEventListener('submit', function(e) {
+                e.preventDefault(); // Tahan pengiriman form (Mencegah reload halaman)
+                
+                const formData = new FormData(this);
+                formData.append('ajax', '1'); // Penanda bahwa ini adalah request AJAX
+                
+                // Animasi muter pada tombol cart saat proses penambahan
+                const btn = this.querySelector('button');
+                const originalContent = btn.innerHTML;
+                btn.innerHTML = '<span class="material-symbols-outlined" style="animation: spin 1s linear infinite;">sync</span>';
+                
+                fetch(this.getAttribute('action'), {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.text()) // Baca sebagai teks dulu agar tidak langsung crash
+                .then(text => {
+                    try {
+                        const data = JSON.parse(text); // Coba terjemahkan teks menjadi JSON
+                        if (data.status === 'success') {
+                            cartBadge.textContent = data.cart_count; // Update notifikasi angka keranjang di Navbar
+                            
+                            // Animasi tombol berubah menjadi centang hijau sebentar
+                            btn.innerHTML = '<span class="material-symbols-outlined">check</span>';
+                            btn.style.backgroundColor = '#059669'; 
+                            
+                            setTimeout(() => {
+                                btn.innerHTML = originalContent; // Kembalikan tombol ke semula
+                                btn.style.backgroundColor = ''; 
+                            }, 1000);
+                        } else if (data.status === 'error') {
+                            alert(data.message);
+                            btn.innerHTML = originalContent;
+                            btn.style.backgroundColor = '';
+                        }
+                    } catch (e) {
+                        // Jika gagal diterjemahkan (ada error PHP), lempar error ke catch
+                        console.error('Balasan server bermasalah:', text);
+                        throw new Error('Format balasan server tidak valid (Bukan JSON).');
+                    }
+                })
+                .catch(error => {
+                    console.error('Terjadi kesalahan:', error);
+                    btn.innerHTML = originalContent; // Hentikan muter dan kembalikan tombol jika error
+                    alert('Gagal menambahkan ke keranjang. Terjadi kesalahan pada server.');
+                });
+            });
+        });
+    });
+</script>
 
 <?php include '../includes/footer.php'; ?>

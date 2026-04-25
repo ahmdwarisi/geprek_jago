@@ -37,9 +37,13 @@
                     
                     <div class="menu-card-footer">
                         <span class="menu-price">Rp <?= number_format($row['harga'], 0, ',', '.') ?></span>
-                        <button class="btn-add" <?= ($row['stok'] <= 0) ? 'disabled title="Stok Habis"' : '' ?>>
-                            <span class="material-symbols-outlined">add_shopping_cart</span>
-                        </button>
+                        <form action="../process/cart_action.php" method="POST" class="form-add-to-cart" style="margin: 0;">
+                            <input type="hidden" name="id_menu" value="<?= $row['id_menu'] ?>">
+                            <input type="hidden" name="action" value="add">
+                            <button type="submit" class="btn-add" title="Tambah ke Keranjang">
+                                <span class="material-symbols-outlined">add_shopping_cart</span>
+                            </button>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -51,5 +55,62 @@
         ?>
     </div>
 </main>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const cartForms = document.querySelectorAll('.form-add-to-cart');
+        const cartBadge = document.querySelector('.cart-badge');
+
+        cartForms.forEach(form => {
+            form.addEventListener('submit', function(e) {
+                e.preventDefault(); // Tahan pengiriman form (Mencegah reload halaman)
+                
+                const formData = new FormData(this);
+                formData.append('ajax', '1'); // Penanda bahwa ini adalah request AJAX
+                
+                // Animasi muter pada tombol cart saat proses penambahan
+                const btn = this.querySelector('button');
+                const originalContent = btn.innerHTML;
+                btn.innerHTML = '<span class="material-symbols-outlined" style="animation: spin 1s linear infinite;">sync</span>';
+                
+                fetch(this.getAttribute('action'), {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.text()) // Baca sebagai teks dulu agar tidak langsung crash
+                .then(text => {
+                    try {
+                        const data = JSON.parse(text); // Coba terjemahkan teks menjadi JSON
+                        if (data.status === 'success') {
+                            cartBadge.textContent = data.cart_count; // Update notifikasi angka keranjang di Navbar
+                            
+                            // Animasi tombol berubah menjadi centang hijau sebentar
+                            btn.innerHTML = '<span class="material-symbols-outlined">check</span>';
+                            btn.style.backgroundColor = '#059669'; 
+                            
+                            setTimeout(() => {
+                                btn.innerHTML = originalContent; // Kembalikan tombol ke semula
+                                btn.style.backgroundColor = ''; 
+                            }, 1000);
+                        } else if (data.status === 'error') {
+                            alert(data.message); // Tampilkan pesan stok habis
+                            btn.innerHTML = originalContent;
+                            btn.style.backgroundColor = ''; 
+                        }
+                    } catch (e) {
+                        // Jika gagal diterjemahkan (ada error PHP), lempar error ke catch
+                        console.error('Balasan server bermasalah:', text);
+                        throw new Error('Format balasan server tidak valid (Bukan JSON).');
+                    }
+                })
+                .catch(error => {
+                    console.error('Terjadi kesalahan:', error);
+                    btn.innerHTML = originalContent; // Hentikan muter dan kembalikan tombol jika error
+                    alert('Gagal menambahkan ke keranjang. Terjadi kesalahan pada server.');
+                });
+            });
+        });
+    });
+</script>
 
 <?php include '../includes/footer.php'; ?>

@@ -11,6 +11,13 @@ if (!isset($_SESSION['admin_logged_in'])) {
 // Mengambil data statistik menu
 $query_total = mysqli_query($conn, "SELECT COUNT(*) as total FROM menu");
 $total_menu = $query_total ? mysqli_fetch_assoc($query_total)['total'] : 0;
+
+$query_tersedia = mysqli_query($conn, "SELECT COUNT(*) as total FROM menu WHERE stok > 0");
+$total_tersedia = $query_tersedia ? mysqli_fetch_assoc($query_tersedia)['total'] : 0;
+
+$query_habis = mysqli_query($conn, "SELECT COUNT(*) as total FROM menu WHERE stok <= 0");
+$total_habis = $query_habis ? mysqli_fetch_assoc($query_habis)['total'] : 0;
+
 ?>
 <!DOCTYPE html>
 <html lang="id">
@@ -78,11 +85,44 @@ $total_menu = $query_total ? mysqli_fetch_assoc($query_total)['total'] : 0;
                 <div class="admin-header" style="display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 1rem;">
                     <div>
                         <h1>Kelola Menu</h1>
-                        <p>Total: <?= $total_menu ?> Item Menu</p>
+                        <p>Pantau inventaris dan performa menu Anda.</p>
                     </div>
                     <button class="btn-primary" onclick="openModal('modalAddMenu')">
                         <span class="material-symbols-outlined">add</span> Tambah Menu
                     </button>
+                </div>
+
+                <!-- Barisan Kartu Statistik Inventaris -->
+                <div class="grid-3" style="margin-bottom: 2rem;">
+                    <div class="admin-stat-card">
+                        <div class="stat-icon-wrap">
+                            <span class="stat-icon emerald material-symbols-outlined">restaurant_menu</span>
+                        </div>
+                        <div>
+                            <p class="stat-title" style="text-transform: uppercase; font-size: 0.75rem; font-weight: 800;">Total Menu</p>
+                            <div class="stat-value"><?= $total_menu ?> <span style="font-size: 1rem; font-weight: 600; color: var(--text-muted);">Item</span></div>
+                        </div>
+                    </div>
+                    
+                    <div class="admin-stat-card">
+                        <div class="stat-icon-wrap">
+                            <span class="stat-icon emerald material-symbols-outlined">check_circle</span>
+                        </div>
+                        <div>
+                            <p class="stat-title" style="text-transform: uppercase; font-size: 0.75rem; font-weight: 800;">Tersedia</p>
+                            <div class="stat-value"><?= $total_tersedia ?> <span style="font-size: 1rem; font-weight: 600; color: var(--text-muted);">Item</span></div>
+                        </div>
+                    </div>
+                    
+                    <div class="admin-stat-card">
+                        <div class="stat-icon-wrap">
+                            <span class="stat-icon material-symbols-outlined" style="background: #fee2e2; color: #dc2626;">cancel</span>
+                        </div>
+                        <div>
+                            <p class="stat-title" style="text-transform: uppercase; font-size: 0.75rem; font-weight: 800;">Stok Habis</p>
+                            <div class="stat-value" style="color: #dc2626;"><?= $total_habis ?> <span style="font-size: 1rem; font-weight: 600;">Item</span></div>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="admin-table-card">
@@ -178,9 +218,10 @@ $total_menu = $query_total ? mysqli_fetch_assoc($query_total)['total'] : 0;
                     <div class="form-group">
                         <label class="form-label">Kategori</label>
                         <select name="kategori" class="form-input" required>
-                            <option value="Makanan">Makanan Utama</option>
-                            <option value="Minuman">Minuman Segar</option>
-                            <option value="Cemilan">Cemilan / Ekstra</option>
+                            <option value="Paket Super Jago">Paket Super Jago</option>
+                            <option value="Paket Hemat Jago">Paket Hemat Jago</option>
+                            <option value="Paket Mie Jago">Paket Mie Jago</option>
+                            <option value="Ala Carte">Ala Carte</option>
                         </select>
                     </div>
                     <div class="form-group">
@@ -230,9 +271,10 @@ $total_menu = $query_total ? mysqli_fetch_assoc($query_total)['total'] : 0;
                     <div class="form-group">
                         <label class="form-label">Kategori</label>
                         <select name="kategori" id="edit_kategori" class="form-input" required>
-                            <option value="Makanan">Makanan Utama</option>
-                            <option value="Minuman">Minuman Segar</option>
-                            <option value="Cemilan">Cemilan / Ekstra</option>
+                            <option value="Paket Super Jago">Paket Super Jago</option>
+                            <option value="Paket Hemat Jago">Paket Hemat Jago</option>
+                            <option value="Paket Mie Jago">Paket Mie Jago</option>
+                            <option value="Ala Carte">Ala Carte</option>
                         </select>
                     </div>
                     <div class="form-group">
