@@ -1,12 +1,6 @@
 <?php
-session_start();
+require_once 'auth_required.php';
 require_once '../config/database.php';
-
-// Cek apakah admin sudah login
-if (!isset($_SESSION['admin_logged_in'])) {
-    header("Location: login_admin.php");
-    exit();
-}
 
 // Mengambil data statistik pesanan dari database
 $query_today = mysqli_query($conn, "SELECT COUNT(*) as total FROM orders WHERE DATE(created_at) = CURDATE()");

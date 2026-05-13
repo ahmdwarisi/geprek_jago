@@ -1,15 +1,30 @@
+-- phpMyAdmin SQL Dump
+-- version 5.2.3
+-- https://www.phpmyadmin.net/
+--
+-- Host: localhost:3306
+-- Generation Time: May 13, 2026 at 05:44 AM
+-- Server version: 8.0.30
+-- PHP Version: 8.1.10
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
 SET time_zone = "+00:00";
 
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
+--
 -- Database: `geprek_jago`
 --
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `admin`
+-- Table structure for table `admin`
 --
 
 CREATE TABLE `admin` (
@@ -19,7 +34,7 @@ CREATE TABLE `admin` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
--- Dumping data untuk tabel `admin`
+-- Dumping data for table `admin`
 --
 
 INSERT INTO `admin` (`id_admin`, `email`, `password`) VALUES
@@ -28,7 +43,7 @@ INSERT INTO `admin` (`id_admin`, `email`, `password`) VALUES
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `keranjang`
+-- Table structure for table `keranjang`
 --
 
 CREATE TABLE `keranjang` (
@@ -42,7 +57,7 @@ CREATE TABLE `keranjang` (
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `menu`
+-- Table structure for table `menu`
 --
 
 CREATE TABLE `menu` (
@@ -57,18 +72,36 @@ CREATE TABLE `menu` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
--- Dumping data untuk tabel `menu`
+-- Dumping data for table `menu`
 --
 
 INSERT INTO `menu` (`id_menu`, `nama_menu`, `deskripsi`, `harga`, `gambar`, `kategori`, `stok`, `created_at`) VALUES
-(1, 'Paket Geprek Jumbo', 'ini lagi coba aja ya', 10000, '1777012180_69eb0dd46900c.avif', 'Makanan', 47, '2026-04-24 06:29:40'),
-(2, 'Es Teh', 'esss', 5000, '1777028636_69eb4e1cbab0b.jpg', 'Minuman', 0, '2026-04-24 11:03:56'),
-(3, 'Paket Ayam Jago', '(Nasi + Ayam Geprek)', 12000, '1777102923_69ec704b0c5f8.jpg', 'Paket Super Jago', 0, '2026-04-25 07:42:03');
+(1, 'Paket Ayam Jago', '(Nasi + Ayam Geprek)', 12000, NULL, 'Paket Super Jago', 100, '2026-04-28 15:46:00'),
+(2, 'Paket Hot Lava', '(Nasi + Ayam Hot Lava)', 12000, NULL, 'Paket Super Jago', 50, '2026-04-28 15:46:00'),
+(3, 'Paket Black Mamba', '(Nasi + Ayam Black Mamba)', 12000, NULL, 'Paket Super Jago', 50, '2026-04-28 15:46:00'),
+(4, 'Paket Komplit', '(Nasi + Ayam Geprek + Minum)', 14000, NULL, 'Paket Hemat Jago', 50, '2026-04-28 15:46:00'),
+(5, 'Paket Nugget Jago', '(Isi 6 pcs)', 10000, NULL, 'Paket Hemat Jago', 30, '2026-04-28 15:46:00'),
+(6, 'Paket Sosis Jago', '(Isi 6 pcs)', 10000, NULL, 'Paket Hemat Jago', 30, '2026-04-28 15:46:00'),
+(7, 'Paket Jamur Enoki', '(Nasi + Jamur Enoki Crispy)', 8000, NULL, 'Paket Hemat Jago', 30, '2026-04-28 15:46:00'),
+(8, 'Mie Combo', '(Mie + Ayam Geprek)', 13000, NULL, 'Paket Mie Jago', 40, '2026-04-28 15:46:00'),
+(9, 'Mie Super', '(Mie + Ayam Geprek + Nasi)', 15000, NULL, 'Paket Mie Jago', 40, '2026-04-28 15:46:00'),
+(10, 'Mie Hemat', '(Mie + Nugget/Sosis)', 12000, NULL, 'Paket Mie Jago', 40, '2026-04-28 15:46:00'),
+(11, 'Es Teh', 'Minuman segar', 3000, NULL, 'Minuman', 100, '2026-04-28 15:46:00'),
+(12, 'Ayam Geprek Saja', 'Ayam geprek tanpa nasi', 9000, NULL, 'Menu Lainnya', 50, '2026-04-28 15:48:18'),
+(13, 'Nugget (6pcs)', 'Hanya nugget', 8000, NULL, 'Menu Lainnya', 30, '2026-04-28 15:48:18'),
+(14, 'Sosis (6pcs)', 'Hanya sosis', 8000, NULL, 'Menu Lainnya', 30, '2026-04-28 15:48:18'),
+(15, 'Nasi Putih', '1 Porsi Nasi', 8000, NULL, 'Menu Lainnya', 100, '2026-04-28 15:48:18'),
+(16, 'Jamur Enoki', 'Hanya jamur enoki', 5000, NULL, 'Menu Lainnya', 30, '2026-04-28 15:48:18'),
+(17, 'Mie Jago', 'Hanya mie jago', 4000, NULL, 'Menu Lainnya', 40, '2026-04-28 15:48:18'),
+(18, 'Es Teh', 'Minuman segar', 3000, NULL, 'Minuman', 100, '2026-04-28 15:48:18'),
+(19, 'lechy tea', 'Varian teh khusus', 4000, NULL, 'Minuman', 50, '2026-04-28 15:48:18'),
+(20, 'Air Mineral', 'Air botol', 3000, NULL, 'Minuman', 100, '2026-04-28 15:48:18'),
+(21, 'Tambah Sambal', 'Extra sambal', 2000, NULL, 'Extra', 100, '2026-04-28 15:48:18');
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `orders`
+-- Table structure for table `orders`
 --
 
 CREATE TABLE `orders` (
@@ -84,7 +117,7 @@ CREATE TABLE `orders` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
--- Dumping data untuk tabel `orders`
+-- Dumping data for table `orders`
 --
 
 INSERT INTO `orders` (`id_order`, `nama_pelanggan`, `no_hp`, `alamat`, `metode_pengiriman`, `metode_pembayaran`, `total_harga`, `status`, `created_at`) VALUES
@@ -100,12 +133,14 @@ INSERT INTO `orders` (`id_order`, `nama_pelanggan`, `no_hp`, `alamat`, `metode_p
 (10, 'nbnn', '', 'kkjj', 'makan_di_tempat', 'transfer', 30000, 'selesai', '2026-04-25 01:43:35'),
 (11, 'uyuy', '', 'yyy', 'makan_di_tempat', 'qris', 15000, 'selesai', '2026-04-25 01:52:40'),
 (12, 'ww', '', 'www', 'makan_di_tempat', 'qris', 20000, 'selesai', '2026-04-25 02:00:47'),
-(13, 'uiui', '6567', 'juiuiu', 'delivery', 'transfer', 42000, 'selesai', '2026-04-25 07:44:25');
+(13, 'uiui', '6567', 'juiuiu', 'delivery', 'transfer', 42000, 'selesai', '2026-04-25 07:44:25'),
+(14, 'fadil', '', 'meja 1', 'makan_di_tempat', 'qris', 20000, 'pending', '2026-04-29 13:58:39'),
+(15, 'juu', '', 'hgjg', 'makan_di_tempat', 'qris', 15000, 'selesai', '2026-05-13 05:25:40');
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `order_detail`
+-- Table structure for table `order_detail`
 --
 
 CREATE TABLE `order_detail` (
@@ -117,36 +152,10 @@ CREATE TABLE `order_detail` (
   `subtotal` int DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
---
--- Dumping data untuk tabel `order_detail`
---
-
-INSERT INTO `order_detail` (`id_detail`, `id_order`, `id_menu`, `jumlah`, `harga`, `subtotal`) VALUES
-(1, 1, 1, 1, 10000, 10000),
-(2, 1, 2, 2, 5000, 10000),
-(3, 2, 1, 2, 10000, 20000),
-(4, 2, 2, 2, 5000, 10000),
-(5, 3, 1, 1, 10000, 10000),
-(6, 4, 1, 3, 10000, 30000),
-(7, 5, 1, 1, 10000, 10000),
-(8, 5, 2, 1, 5000, 5000),
-(9, 6, 1, 1, 10000, 10000),
-(10, 6, 2, 1, 5000, 5000),
-(11, 7, 1, 1, 10000, 10000),
-(12, 7, 2, 1, 5000, 5000),
-(13, 8, 1, 2, 10000, 20000),
-(14, 8, 2, 2, 5000, 10000),
-(15, 9, 2, 20, 5000, 100000),
-(16, 10, 2, 6, 5000, 30000),
-(17, 11, 2, 3, 5000, 15000),
-(18, 12, 2, 2, 5000, 10000),
-(19, 12, 1, 1, 10000, 10000),
-(20, 13, 3, 3, 12000, 36000);
-
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `review`
+-- Table structure for table `review`
 --
 
 CREATE TABLE `review` (
@@ -163,33 +172,33 @@ CREATE TABLE `review` (
 --
 
 --
--- Indeks untuk tabel `admin`
+-- Indexes for table `admin`
 --
 ALTER TABLE `admin`
   ADD PRIMARY KEY (`id_admin`),
   ADD UNIQUE KEY `email` (`email`);
 
 --
--- Indeks untuk tabel `keranjang`
+-- Indexes for table `keranjang`
 --
 ALTER TABLE `keranjang`
   ADD PRIMARY KEY (`id_keranjang`),
   ADD KEY `id_menu` (`id_menu`);
 
 --
--- Indeks untuk tabel `menu`
+-- Indexes for table `menu`
 --
 ALTER TABLE `menu`
   ADD PRIMARY KEY (`id_menu`);
 
 --
--- Indeks untuk tabel `orders`
+-- Indexes for table `orders`
 --
 ALTER TABLE `orders`
   ADD PRIMARY KEY (`id_order`);
 
 --
--- Indeks untuk tabel `order_detail`
+-- Indexes for table `order_detail`
 --
 ALTER TABLE `order_detail`
   ADD PRIMARY KEY (`id_detail`),
@@ -197,73 +206,76 @@ ALTER TABLE `order_detail`
   ADD KEY `id_menu` (`id_menu`);
 
 --
--- Indeks untuk tabel `review`
+-- Indexes for table `review`
 --
 ALTER TABLE `review`
   ADD PRIMARY KEY (`id_review`),
   ADD KEY `id_menu` (`id_menu`);
 
 --
--- AUTO_INCREMENT untuk tabel yang dibuang
+-- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT untuk tabel `admin`
+-- AUTO_INCREMENT for table `admin`
 --
 ALTER TABLE `admin`
   MODIFY `id_admin` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
--- AUTO_INCREMENT untuk tabel `keranjang`
+-- AUTO_INCREMENT for table `keranjang`
 --
 ALTER TABLE `keranjang`
   MODIFY `id_keranjang` int NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT untuk tabel `menu`
+-- AUTO_INCREMENT for table `menu`
 --
 ALTER TABLE `menu`
-  MODIFY `id_menu` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_menu` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
--- AUTO_INCREMENT untuk tabel `orders`
+-- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id_order` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id_order` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
--- AUTO_INCREMENT untuk tabel `order_detail`
+-- AUTO_INCREMENT for table `order_detail`
 --
 ALTER TABLE `order_detail`
-  MODIFY `id_detail` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `id_detail` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
--- AUTO_INCREMENT untuk tabel `review`
+-- AUTO_INCREMENT for table `review`
 --
 ALTER TABLE `review`
   MODIFY `id_review` int NOT NULL AUTO_INCREMENT;
 
 --
--- Ketidakleluasaan untuk tabel pelimpahan (Dumped Tables)
+-- Constraints for dumped tables
 --
 
 --
--- Ketidakleluasaan untuk tabel `keranjang`
+-- Constraints for table `keranjang`
 --
 ALTER TABLE `keranjang`
   ADD CONSTRAINT `keranjang_ibfk_1` FOREIGN KEY (`id_menu`) REFERENCES `menu` (`id_menu`) ON DELETE CASCADE;
 
 --
--- Ketidakleluasaan untuk tabel `order_detail`
+-- Constraints for table `order_detail`
 --
 ALTER TABLE `order_detail`
   ADD CONSTRAINT `order_detail_ibfk_1` FOREIGN KEY (`id_order`) REFERENCES `orders` (`id_order`) ON DELETE CASCADE,
   ADD CONSTRAINT `order_detail_ibfk_2` FOREIGN KEY (`id_menu`) REFERENCES `menu` (`id_menu`) ON DELETE CASCADE;
 
 --
--- Ketidakleluasaan untuk tabel `review`
+-- Constraints for table `review`
 --
 ALTER TABLE `review`
   ADD CONSTRAINT `review_ibfk_1` FOREIGN KEY (`id_menu`) REFERENCES `menu` (`id_menu`) ON DELETE CASCADE;
 COMMIT;
 
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

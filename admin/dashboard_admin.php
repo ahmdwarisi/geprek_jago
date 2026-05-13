@@ -1,12 +1,6 @@
 <?php
-session_start();
+require_once 'auth_required.php';
 require_once '../config/database.php';
-
-// Cek apakah admin sudah login
-if (!isset($_SESSION['admin_logged_in'])) {
-    header("Location: login_admin.php");
-    exit();
-}
 
 // Mengambil data statistik dari database (seperti sebelumnya)
 $query_total = mysqli_query($conn, "SELECT COUNT(*) as total FROM menu");

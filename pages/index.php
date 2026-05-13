@@ -13,13 +13,13 @@
             Ayam geprek kualitas juara dengan bumbu rahasia nusantara yang bikin ketagihan. Dibuat dengan ayam pilihan dan sambal yang diulek segar setiap hari.
           </p>
           <div class="hero-actions">
-            <button class="btn-secondary">
+            <a href="keranjang.php" class="btn-secondary" style="text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem;">
               Pesan Sekarang
               <span class="material-symbols-outlined">shopping_cart</span>
-            </button>
-            <button class="btn-outline">
+            </a>
+            <a href="menu.php" class="btn-outline" style="text-decoration: none;">
               Lihat Menu
-            </button>
+            </a>
           </div>
         </div>
         <div class="hero-img-wrap">
