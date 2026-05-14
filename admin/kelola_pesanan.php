@@ -213,8 +213,7 @@ elseif ($filter === 'selesai') $where_clause = "WHERE status = 'selesai'";
                                                         <div style="border-top: 1px dashed var(--surface-border); margin-top: 1rem; padding-top: 1rem; display: flex; justify-content: space-between; font-weight: 800; color: var(--primary); font-size: 1.125rem;">
                                                             <span>Total Harga</span>
                                                             <span>Rp '.number_format($order['total_harga'], 0, ',', '.').'</span>
-                                                        </div>
-                                                    </div>
+                                                        </div>                                                        '.($order['deskripsi'] ? '<div style="margin-top: 1.5rem; padding: 1rem; background: #f3f4f6; border-radius: 0.75rem; border-left: 3px solid var(--primary);"><p style="font-size: 0.75rem; color: var(--text-muted); font-weight: 700; text-transform: uppercase; margin-bottom: 0.5rem;">Catatan Pelanggan</p><p style="font-size: 0.875rem; color: var(--text-main);">'.htmlspecialchars($order['deskripsi']).'</p></div>' : '').'                                                    </div>
                                                 </div>
                                             </div>
                                         </div>';

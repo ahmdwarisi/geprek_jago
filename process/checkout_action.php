@@ -56,8 +56,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_SESSION['cart'])) {
             mysqli_query($conn, "UPDATE menu SET stok = GREATEST(0, stok - $qty) WHERE id_menu = '$id_menu'");
         }
 
+        // Simpan deskripsi pesanan jika ada
+        if (!empty($_SESSION['cart_deskripsi'])) {
+            $deskripsi_db = mysqli_real_escape_string($conn, $_SESSION['cart_deskripsi']);
+            mysqli_query($conn, "UPDATE orders SET deskripsi = '$deskripsi_db' WHERE id_order = $id_order");
+        }
+
         // 5. Kosongkan keranjang & Arahkan ke halaman riwayat pesanan
         unset($_SESSION['cart']);
+        unset($_SESSION['cart_deskripsi']);
         header("Location: ../pages/pesanan.php?status=success");
         exit;
     } else {

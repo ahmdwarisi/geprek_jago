@@ -71,12 +71,23 @@ include '../includes/header.php';
                         </div>
                     </div>
                 </div>
+
             <?php
                 }
             } else {
                 echo '<div style="text-align: center; padding: 3rem; background: white; border-radius: 1rem; border: 1px solid var(--surface-border);"><p style="color: var(--text-muted); margin-bottom: 1rem;">Keranjang belanja Anda masih kosong.</p><a href="menu.php" class="btn-primary">Mulai Belanja</a></div>';
             }
             ?>
+            
+            <?php if (!empty($cart_items_data)): ?>
+            <div style="margin-top: 2rem; padding: 1.5rem; background: white; border-radius: 1rem; border: 1px solid var(--surface-border);">
+                <label class="form-label" style="display: block; margin-bottom: 0.75rem;">Catatan Tambahan (Opsional)</label>
+                <form action="../process/cart_note_action.php" method="POST">
+                    <textarea name="catatan" class="form-input" rows="3" placeholder="Deskripsi pesanan (opsional)"><?= htmlspecialchars($_SESSION['cart_deskripsi'] ?? '') ?></textarea>
+                    <button type="submit" class="btn-primary" style="margin-top: 1rem;">Simpan Catatan</button>
+                </form>
+            </div>
+            <?php endif; ?>
         </div>
 
         <div class="cart-summary">

@@ -42,9 +42,10 @@
         </div>
         <div class="grid-3">
           <?php
-          $query = mysqli_query($conn, "SELECT * FROM menu LIMIT 3");
+          $query = mysqli_query($conn, "SELECT m.*, COALESCE(AVG(r.rating), 0) AS avg_rating, COUNT(r.id_review) AS review_count FROM menu m LEFT JOIN review r ON r.id_menu = m.id_menu GROUP BY m.id_menu LIMIT 3");
           if ($query && mysqli_num_rows($query) > 0) {
               while ($row = mysqli_fetch_assoc($query)) {
+                  $avgRating = number_format((float) $row['avg_rating'], 1);
           ?>
             <div class="menu-card">
               <div class="menu-card-img">
@@ -55,7 +56,7 @@
                   <h3><?= htmlspecialchars($row['nama_menu']) ?></h3>
                   <div class="menu-rating">
                     <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
-                    <span>4.8</span>
+                    <span><?= $avgRating ?></span>
                   </div>
                 </div>
                 <p class="menu-card-desc"><?= htmlspecialchars($row['deskripsi']) ?></p>
@@ -122,42 +123,32 @@
           <div class="divider"></div>
         </div>
         <div class="testi-wrap">
-          <!-- Testimonial 1 -->
-          <div class="testi-card">
-            <div class="testi-stars">
-              <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
-              <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
-              <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
-              <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
-              <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
-            </div>
-            <p class="testi-text">"Pedasnya beneran nagih! Sambal koreknya fresh banget diulek dadakan. Ayamnya juga juicy dalemnya tapi garing diluar."</p>
-            <div class="testi-user">
-              <img alt="Siti Aminah" class="testi-avatar" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAXRBj9qK_iKytsqMqMnLi30Ob6ZCJ2U3XO8UOTznD051D_W1AHJng_ANANqd-BDR44-WJc5lkjliU55_uyVl6hZTq8G9MKoq0fMaL5Y3Q31g73EkaBeNMIO1mutNe54M461rTviUHpLr_arwjWTg4omI_P37_cjkgseTcMH8IuXLs6C6L4vpEWzTZTV_z_0-gTym5K5OQZ4GCO8hYiKc7r-TtGkmppjD4qqbNBTYXiUV2cHAfTXu10rn4itE1BNcL6HDD5TLFBkR4">
-              <div>
-                <div class="testi-name">Siti Aminah</div>
-                <div class="testi-role">Food Vlogger</div>
+          <?php
+          $query_reviews = mysqli_query($conn, "SELECT * FROM review ORDER BY created_at DESC LIMIT 4");
+          if ($query_reviews && mysqli_num_rows($query_reviews) > 0) {
+              while ($review = mysqli_fetch_assoc($query_reviews)) {
+                  $rating = (int) round($review['rating']);
+          ?>
+            <div class="testi-card">
+              <div class="testi-stars">
+                <?php for ($i = 1; $i <= 5; $i++): ?>
+                  <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' <?= $i <= $rating ? 1 : 0 ?>;">star</span>
+                <?php endfor; ?>
+              </div>
+              <p class="testi-text">"<?= htmlspecialchars($review['komentar'] ?: 'Pelanggan tidak meninggalkan komentar.') ?>"</p>
+              <div class="testi-user">
+                <div>
+                  <div class="testi-name"><?= htmlspecialchars($review['nama'] ?: 'Pelanggan') ?></div>
+                  <div class="testi-role">Ulasan Pesanan</div>
+                </div>
               </div>
             </div>
-          </div>
-          <!-- Testimonial 2 -->
-          <div class="testi-card">
-            <div class="testi-stars">
-              <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
-              <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
-              <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
-              <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
-              <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
-            </div>
-            <p class="testi-text">"Paling suka Geprek Mozzarella-nya. Keju-nya melimpah dan pas banget dimakan pas masih panas. Pelayanannya cepet banget buat take-away."</p>
-            <div class="testi-user">
-              <img alt="Budi Santoso" class="testi-avatar" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDzNkK00nWQJJ0TjXcxg38Sn60t4LtkoY4c7vBCrreLtr9giUnTxynjzZGG7mUWJAVud43rYIFVp8aKN27OgU-97Qk3OV-SNm44BOMQB7XXkyNVB-PGoa8SYc-G32lJFfmRKyfakhl-bZkFHibqLfWvj8JVix5_lHxAQzJlIdNFUGiFmu1_Ohj2cSw0H1eUkS8UxxM1G4dybZrPIaUklj18_LPqB0y6NbYV7oDoRNM3mrQTdEzwapqsPhKcA8NKgAr2gWTHWzftdaY">
-              <div>
-                <div class="testi-name">Budi Santoso</div>
-                <div class="testi-role">Mahasiswa</div>
-              </div>
-            </div>
-          </div>
+          <?php
+              }
+          } else {
+              echo '<div style="grid-column: 1 / -1; text-align: center;"><p style="color: var(--text-muted);">Belum ada rating pelanggan. Ayo jadi yang pertama memberi ulasan!</p></div>';
+          }
+          ?>
         </div>
       </div>
     </section>

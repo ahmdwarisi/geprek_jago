@@ -17,4 +17,7 @@
   }
 
   mysqli_set_charset($conn, 'utf8');
+  
+  // Auto-migration untuk menambahkan kolom catatan jika belum ada
+  require_once __DIR__ . '/migrate.php';
 ?>
