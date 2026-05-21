@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.3
+-- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost:3306
--- Generation Time: May 13, 2026 at 05:44 AM
--- Server version: 8.0.30
--- PHP Version: 8.1.10
+-- Host: 127.0.0.1
+-- Generation Time: May 21, 2026 at 11:19 AM
+-- Server version: 11.7.2-MariaDB
+-- PHP Version: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -28,7 +28,7 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `admin` (
-  `id_admin` int NOT NULL,
+  `id_admin` int(11) NOT NULL,
   `email` varchar(100) DEFAULT NULL,
   `password` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -47,12 +47,38 @@ INSERT INTO `admin` (`id_admin`, `email`, `password`) VALUES
 --
 
 CREATE TABLE `keranjang` (
-  `id_keranjang` int NOT NULL,
+  `id_keranjang` int(11) NOT NULL,
   `session_id` varchar(255) DEFAULT NULL,
-  `id_menu` int DEFAULT NULL,
-  `jumlah` int DEFAULT NULL,
-  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP
+  `id_menu` int(11) DEFAULT NULL,
+  `jumlah` int(11) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `keranjang`
+--
+
+INSERT INTO `keranjang` (`id_keranjang`, `session_id`, `id_menu`, `jumlah`, `created_at`) VALUES
+(1, 'session_abc123', 1, 2, '2026-05-21 03:00:00'),
+(2, 'session_abc123', 4, 1, '2026-05-21 03:00:00'),
+(3, 'session_abc123', 11, 3, '2026-05-21 03:00:00'),
+(4, 'session_def456', 2, 1, '2026-05-21 04:30:00'),
+(5, 'session_def456', 8, 2, '2026-05-21 04:30:00'),
+(6, 'session_ghi789', 3, 1, '2026-05-21 05:15:00'),
+(7, 'session_ghi789', 5, 1, '2026-05-21 05:15:00'),
+(8, 'session_ghi789', 7, 1, '2026-05-21 05:15:00'),
+(9, 'session_jkl012', 9, 2, '2026-05-21 06:45:00'),
+(10, 'session_jkl012', 15, 1, '2026-05-21 06:45:00'),
+(11, 'session_mno345', 1, 3, '2026-05-21 07:20:00'),
+(12, 'session_mno345', 12, 2, '2026-05-21 07:20:00'),
+(13, 'session_pqr678', 6, 1, '2026-05-21 08:00:00'),
+(14, 'session_pqr678', 10, 1, '2026-05-21 08:00:00'),
+(15, 'session_stu901', 13, 4, '2026-05-21 09:30:00'),
+(16, 'session_vwx234', 2, 2, '2026-05-21 10:00:00'),
+(17, 'session_vwx234', 3, 1, '2026-05-21 10:00:00'),
+(18, 'session_yza567', 16, 2, '2026-05-21 11:15:00'),
+(19, 'session_yza567', 17, 1, '2026-05-21 11:15:00'),
+(20, 'session_bcd890', 18, 3, '2026-05-21 12:30:00');
 
 -- --------------------------------------------------------
 
@@ -61,14 +87,14 @@ CREATE TABLE `keranjang` (
 --
 
 CREATE TABLE `menu` (
-  `id_menu` int NOT NULL,
+  `id_menu` int(11) NOT NULL,
   `nama_menu` varchar(150) DEFAULT NULL,
-  `deskripsi` text,
-  `harga` int DEFAULT NULL,
+  `deskripsi` text DEFAULT NULL,
+  `harga` int(11) DEFAULT NULL,
   `gambar` varchar(255) DEFAULT NULL,
   `kategori` varchar(100) DEFAULT NULL,
-  `stok` int DEFAULT '0',
-  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP
+  `stok` int(11) DEFAULT 0,
+  `created_at` timestamp NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
@@ -105,37 +131,53 @@ INSERT INTO `menu` (`id_menu`, `nama_menu`, `deskripsi`, `harga`, `gambar`, `kat
 --
 
 CREATE TABLE `orders` (
-  `id_order` int NOT NULL,
+  `id_order` int(11) NOT NULL,
   `nama_pelanggan` varchar(100) DEFAULT NULL,
   `no_hp` varchar(20) DEFAULT NULL,
-  `alamat` text,
+  `alamat` text DEFAULT NULL,
+  `deskripsi` text DEFAULT NULL,
   `metode_pengiriman` enum('makan_di_tempat','delivery') DEFAULT NULL,
   `metode_pembayaran` enum('qris','ewallet','transfer','cash') DEFAULT NULL,
-  `total_harga` int DEFAULT NULL,
+  `total_harga` int(11) DEFAULT NULL,
   `status` enum('pending','diproses','selesai') DEFAULT 'pending',
-  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP
+  `created_at` timestamp NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `orders`
 --
 
-INSERT INTO `orders` (`id_order`, `nama_pelanggan`, `no_hp`, `alamat`, `metode_pengiriman`, `metode_pembayaran`, `total_harga`, `status`, `created_at`) VALUES
-(1, 'wsqs', '', 'axsa', 'makan_di_tempat', 'qris', 20000, 'selesai', '2026-04-24 11:40:57'),
-(2, 'hsjahsaj', '', 'asjiidisi', 'makan_di_tempat', 'ewallet', 30000, 'selesai', '2026-04-24 11:45:25'),
-(3, 'iuhdisu', '', 'iuwi', 'makan_di_tempat', 'qris', 10000, 'selesai', '2026-04-24 11:47:58'),
-(4, 'sjahishi', '', 'iuwhiuqw', 'makan_di_tempat', 'cash', 30000, 'selesai', '2026-04-24 12:00:08'),
-(5, 'iwiqeh', '', 'iwhiehi', 'makan_di_tempat', 'transfer', 15000, 'selesai', '2026-04-24 12:03:56'),
-(6, 'ijooi', '5656565656665', 'uhihuii', 'delivery', 'qris', 21000, 'selesai', '2026-04-24 14:43:20'),
-(7, 'jajaj', '877887878', 'jhahajjjhzvvzCzFV', 'delivery', 'cash', 36000, 'selesai', '2026-04-24 15:46:22'),
-(8, 'iuhiui', '4568', 'hhhjjjfffggf', 'delivery', 'qris', 33600, 'selesai', '2026-04-25 01:40:17'),
-(9, 'hhhhhh', '', 'hhhhhh', 'makan_di_tempat', 'ewallet', 100000, 'selesai', '2026-04-25 01:41:53'),
-(10, 'nbnn', '', 'kkjj', 'makan_di_tempat', 'transfer', 30000, 'selesai', '2026-04-25 01:43:35'),
-(11, 'uyuy', '', 'yyy', 'makan_di_tempat', 'qris', 15000, 'selesai', '2026-04-25 01:52:40'),
-(12, 'ww', '', 'www', 'makan_di_tempat', 'qris', 20000, 'selesai', '2026-04-25 02:00:47'),
-(13, 'uiui', '6567', 'juiuiu', 'delivery', 'transfer', 42000, 'selesai', '2026-04-25 07:44:25'),
-(14, 'fadil', '', 'meja 1', 'makan_di_tempat', 'qris', 20000, 'pending', '2026-04-29 13:58:39'),
-(15, 'juu', '', 'hgjg', 'makan_di_tempat', 'qris', 15000, 'selesai', '2026-05-13 05:25:40');
+INSERT INTO `orders` (`id_order`, `nama_pelanggan`, `no_hp`, `alamat`, `deskripsi`, `metode_pengiriman`, `metode_pembayaran`, `total_harga`, `status`, `created_at`) VALUES
+(1, 'Siska', '08123456701', 'Telang Indah', NULL, 'makan_di_tempat', 'cash', 12000, 'selesai', '2026-04-25 20:00:00'),
+(2, 'adi', '08123456702', 'Gg. 1 Kamal', NULL, 'delivery', 'cash', 24000, 'selesai', '2026-04-25 21:15:00'),
+(3, 'laura', '08123456703', 'Fakultas Teknik UTM', NULL, 'delivery', 'cash', 15000, 'selesai', '2026-04-25 22:30:00'),
+(4, 'chelsy', '08123456704', 'Dormitory UTM', NULL, 'makan_di_tempat', 'cash', 14000, 'selesai', '2026-04-25 23:00:00'),
+(5, 'Maya Sari', '08123456705', 'Jl. Raya Telang', NULL, 'makan_di_tempat', 'cash', 12000, 'selesai', '2026-04-26 20:00:00'),
+(6, 'Dedi Kurnia', '08123456706', 'Perum Grahakamal', NULL, 'delivery', 'cash', 24000, 'selesai', '2026-04-26 21:45:00'),
+(7, 'warisi', '08123456707', 'Fisib UTM', NULL, 'delivery', 'cash', 13000, 'selesai', '2026-04-26 22:15:00'),
+(8, 'Rizky Pratama', '08123456708', 'Telang Indah Barat', NULL, 'makan_di_tempat', 'cash', 25000, 'selesai', '2026-04-26 23:30:00'),
+(9, 'Laila Husna', '08123456709', 'Gg. Sabar Kamal', NULL, 'delivery', 'cash', 10000, 'selesai', '2026-04-27 04:30:00'),
+(10, 'Fajar Siddiq', '08123456710', 'Depan UTM', NULL, 'makan_di_tempat', 'cash', 20000, 'selesai', '2026-04-27 20:30:00'),
+(11, 'dyah ayu', '08123456711', 'Fakultas Ekonomi', NULL, 'delivery', 'cash', 15000, 'selesai', '2026-04-27 21:00:00'),
+(12, 'Hendra', '08123456712', 'Jl. Kusuma Bangsa', NULL, 'makan_di_tempat', 'cash', 20000, 'selesai', '2026-04-27 22:00:00'),
+(13, 'Yuni Artanti', '08123456713', 'Gg. Melati', NULL, 'delivery', 'cash', 13000, 'selesai', '2026-04-27 22:45:00'),
+(14, 'Taufik', '08123456714', 'Lab. Informatika', NULL, 'delivery', 'cash', 28000, 'selesai', '2026-04-27 23:15:00'),
+(15, 'Nihaa', '08123456715', 'Telang Timur', NULL, 'makan_di_tempat', 'cash', 12000, 'selesai', '2026-04-28 00:00:00'),
+(16, 'Adit', '08123456716', 'Kos Hijau', NULL, 'makan_di_tempat', 'cash', 14000, 'selesai', '2026-04-28 04:00:00'),
+(17, 'Indah Lestari', '08123456717', 'Grahakamal Blok A', NULL, 'delivery', 'cash', 22000, 'selesai', '2026-04-28 05:00:00'),
+(18, 'Bambang', '08123456718', 'Jl. Kamal Raya', NULL, 'makan_di_tempat', 'cash', 8000, 'selesai', '2026-04-28 05:30:00'),
+(19, 'Zulfa', '08123456719', 'Faperta UTM', NULL, 'delivery', 'cash', 13000, 'selesai', '2026-04-28 06:00:00'),
+(20, 'fadil', '08123456720', 'Telang Indah Gg 2', NULL, 'makan_di_tempat', 'cash', 25000, 'selesai', '2026-04-28 06:30:00'),
+(21, 'Mega', '08123456721', 'Belakang UTM', NULL, 'delivery', 'cash', 15000, 'selesai', '2026-04-28 07:00:00'),
+(22, 'Guntur', '08123456722', 'Perumahan Telang', NULL, 'makan_di_tempat', 'cash', 12000, 'selesai', '2026-04-28 07:15:00'),
+(23, 'Nadia', '08123456723', 'Samping Kampus', NULL, 'delivery', 'cash', 14000, 'selesai', '2026-04-28 07:30:00'),
+(24, 'Fika', '08123456724', 'Jl. Raya Kamal', NULL, 'makan_di_tempat', 'cash', 20000, 'selesai', '2026-04-28 07:45:00'),
+(25, 'Ratna', '08123456725', 'Fisib Gedung C', NULL, 'delivery', 'cash', 12000, 'selesai', '2026-04-28 08:00:00'),
+(26, 'Dika', '08123456726', 'Kos Oranye', NULL, 'makan_di_tempat', 'cash', 8000, 'selesai', '2026-04-28 08:15:00'),
+(27, 'Hani', '08123456727', 'Fakultas Hukum', NULL, 'delivery', 'cash', 13000, 'selesai', '2026-04-28 08:30:00'),
+(28, 'Yoga', '08123456728', 'Telang Indah Gg 5', NULL, 'makan_di_tempat', 'cash', 24000, 'selesai', '2026-04-28 08:45:00'),
+(29, 'Rara', '08123456729', 'Jl. Telang Jaya', NULL, 'delivery', 'cash', 15000, 'selesai', '2026-04-28 09:00:00'),
+(30, 'Irfan', '08123456730', 'Depan Gerbang UTM', NULL, 'makan_di_tempat', 'cash', 12000, 'selesai', '2026-04-28 09:15:00');
 
 -- --------------------------------------------------------
 
@@ -144,13 +186,39 @@ INSERT INTO `orders` (`id_order`, `nama_pelanggan`, `no_hp`, `alamat`, `metode_p
 --
 
 CREATE TABLE `order_detail` (
-  `id_detail` int NOT NULL,
-  `id_order` int DEFAULT NULL,
-  `id_menu` int DEFAULT NULL,
-  `jumlah` int DEFAULT NULL,
-  `harga` int DEFAULT NULL,
-  `subtotal` int DEFAULT NULL
+  `id_detail` int(11) NOT NULL,
+  `id_order` int(11) DEFAULT NULL,
+  `id_menu` int(11) DEFAULT NULL,
+  `jumlah` int(11) DEFAULT NULL,
+  `harga` int(11) DEFAULT NULL,
+  `subtotal` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `order_detail`
+--
+
+INSERT INTO `order_detail` (`id_detail`, `id_order`, `id_menu`, `jumlah`, `harga`, `subtotal`) VALUES
+(1, 1, 1, 1, 10000, 10000),
+(2, 1, 2, 2, 5000, 10000),
+(3, 2, 1, 2, 10000, 20000),
+(4, 2, 2, 2, 5000, 10000),
+(5, 3, 1, 1, 10000, 10000),
+(6, 4, 1, 3, 10000, 30000),
+(7, 5, 1, 1, 10000, 10000),
+(8, 5, 2, 1, 5000, 5000),
+(9, 6, 1, 1, 10000, 10000),
+(10, 6, 2, 1, 5000, 5000),
+(11, 7, 1, 1, 10000, 10000),
+(12, 7, 2, 1, 5000, 5000),
+(13, 8, 1, 2, 10000, 20000),
+(14, 8, 2, 2, 5000, 10000),
+(15, 9, 2, 20, 5000, 100000),
+(16, 10, 2, 6, 5000, 30000),
+(17, 11, 2, 3, 5000, 15000),
+(18, 12, 2, 2, 5000, 10000),
+(19, 12, 1, 1, 10000, 10000),
+(20, 13, 3, 3, 12000, 36000);
 
 -- --------------------------------------------------------
 
@@ -159,13 +227,34 @@ CREATE TABLE `order_detail` (
 --
 
 CREATE TABLE `review` (
-  `id_review` int NOT NULL,
-  `id_menu` int DEFAULT NULL,
+  `id_review` int(11) NOT NULL,
+  `id_menu` int(11) DEFAULT NULL,
   `nama` varchar(100) DEFAULT NULL,
-  `rating` int DEFAULT NULL,
-  `komentar` text,
-  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP
+  `rating` int(11) DEFAULT NULL,
+  `komentar` text DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `review`
+--
+
+INSERT INTO `review` (`id_review`, `id_menu`, `nama`, `rating`, `komentar`, `created_at`) VALUES
+(1, 1, 'Siska', 5, 'Ayamnya krispi banget, sambalnya nampol!', '2026-04-28 02:00:00'),
+(2, 2, 'adii', 4, 'Hot lavanya enak, tapi kurang pedas dikit buat saya.', '2026-04-28 02:30:00'),
+(3, 3, 'Rina', 5, 'Black mamba unik banget rasanya, wajib coba guys!', '2026-04-28 20:15:00'),
+(4, 4, 'Andi', 5, 'Paket komplit paling worth it buat kantong mahasiswa.', '2026-04-28 21:00:00'),
+(5, 8, 'Maya', 4, 'Mie combonya porsinya banyak, kenyang pol.', '2026-04-28 22:45:00'),
+(6, 9, 'Dedi', 5, 'Mie supernyaa nyuperrr.', '2026-04-29 19:20:00'),
+(7, 11, 'Santi', 3, 'Es tehnya standar sih, tapi seger.', '2026-04-29 23:10:00'),
+(8, 7, 'Rizky', 5, 'Jamur enokinya krispi parah, nagih!', '2026-04-30 00:00:00'),
+(9, 19, 'Laila', 4, 'Lechy teanya enak, kerasa banget lecinya.', '2026-04-30 18:30:00'),
+(10, 12, 'Fajar', 4, 'Ayam gepreknya gede, bumbunya meresap.', '2026-04-30 19:00:00'),
+(11, 1, 'Dewi', 5, 'Sering beli di sini, kualitasnya konsisten.', '2026-04-30 19:45:00'),
+(12, 10, 'Hendra', 4, 'Mie hemat emang beneran hemat buat akhir bulan haha.', '2026-04-30 20:20:00'),
+(13, 21, 'Yuni', 5, 'Sambalnya beneran extra, mantap!', '2026-04-30 20:50:00'),
+(14, 4, 'Taufik', 5, 'Pelayanan cepet, makanan dateng masih anget.', '2026-04-30 21:15:00'),
+(15, 3, 'Putri', 2, 'Enak sih tapi nunggu antriannya agak lama.', '2026-04-30 21:45:00');
 
 --
 -- Indexes for dumped tables
@@ -220,37 +309,37 @@ ALTER TABLE `review`
 -- AUTO_INCREMENT for table `admin`
 --
 ALTER TABLE `admin`
-  MODIFY `id_admin` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id_admin` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `keranjang`
 --
 ALTER TABLE `keranjang`
-  MODIFY `id_keranjang` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id_keranjang` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT for table `menu`
 --
 ALTER TABLE `menu`
-  MODIFY `id_menu` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `id_menu` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id_order` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id_order` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 
 --
 -- AUTO_INCREMENT for table `order_detail`
 --
 ALTER TABLE `order_detail`
-  MODIFY `id_detail` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `id_detail` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT for table `review`
 --
 ALTER TABLE `review`
-  MODIFY `id_review` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id_review` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- Constraints for dumped tables
@@ -260,12 +349,15 @@ ALTER TABLE `review`
 -- Constraints for table `keranjang`
 --
 ALTER TABLE `keranjang`
+  ADD CONSTRAINT `fk_keranjang_menu` FOREIGN KEY (`id_menu`) REFERENCES `menu` (`id_menu`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `keranjang_ibfk_1` FOREIGN KEY (`id_menu`) REFERENCES `menu` (`id_menu`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `order_detail`
 --
 ALTER TABLE `order_detail`
+  ADD CONSTRAINT `fk_order_detail_menu` FOREIGN KEY (`id_menu`) REFERENCES `menu` (`id_menu`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_order_detail_orders` FOREIGN KEY (`id_order`) REFERENCES `orders` (`id_order`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `order_detail_ibfk_1` FOREIGN KEY (`id_order`) REFERENCES `orders` (`id_order`) ON DELETE CASCADE,
   ADD CONSTRAINT `order_detail_ibfk_2` FOREIGN KEY (`id_menu`) REFERENCES `menu` (`id_menu`) ON DELETE CASCADE;
 
@@ -273,6 +365,7 @@ ALTER TABLE `order_detail`
 -- Constraints for table `review`
 --
 ALTER TABLE `review`
+  ADD CONSTRAINT `fk_review_menu` FOREIGN KEY (`id_menu`) REFERENCES `menu` (`id_menu`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `review_ibfk_1` FOREIGN KEY (`id_menu`) REFERENCES `menu` (`id_menu`) ON DELETE CASCADE;
 COMMIT;
 
