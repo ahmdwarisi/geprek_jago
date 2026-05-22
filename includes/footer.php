@@ -20,17 +20,16 @@
                         <li><a href="kontak.php">Hubungi Kami</a></li>
                     </ul>
                 </div>
-                <div class="footer-col">
-                    <h4>Lokasi Kami</h4>
-                    <div class="social-links">
-                        <a href="#" class="social-btn">
-                            <span class="material-symbols-outlined">brand_awareness</span>
-                        </a>
-                        <a href="#" class="social-btn">
-                            <span class="material-symbols-outlined">photo_camera</span>
-                        </a>
-                    </div>
-                </div>
+<div class="footer-col">
+    <h4>Lokasi Kami</h4>
+    <p>
+        Perumahan Telang Indah, Telang, Kec. Kamal, Kabupaten Bangkalan, Jawa Timur 69162
+    </p>
+    <a href="https://maps.app.goo.gl/etHVMspTRZVCf8aJA" target="_blank" class="map-link-box">
+        <span class="material-symbols-outlined">location_on</span>
+        <span class="map-text">Buka di Google Maps</span>
+    </a>
+</div>
             </div>
             <div class="footer-bottom">
                 <p>© 2026 Geprek Jago.</p>

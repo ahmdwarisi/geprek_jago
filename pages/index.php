@@ -13,11 +13,11 @@
             Ayam geprek kualitas juara dengan bumbu rahasia nusantara yang bikin ketagihan. Dibuat dengan ayam pilihan dan sambal yang diulek segar setiap hari.
           </p>
           <div class="hero-actions">
-            <a href="keranjang.php" class="btn-secondary" style="text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem;">
+            <a href="keranjang.php" class="btn-secondary">
               Pesan Sekarang
               <span class="material-symbols-outlined">shopping_cart</span>
             </a>
-            <a href="menu.php" class="btn-outline" style="text-decoration: none;">
+            <a href="menu.php" class="btn-outline">
               Lihat Menu
             </a>
           </div>
@@ -62,7 +62,7 @@
                 <p class="menu-card-desc"><?= htmlspecialchars($row['deskripsi']) ?></p>
                 <div class="menu-card-footer">
                   <span class="menu-price">Rp <?= number_format($row['harga'], 0, ',', '.') ?></span>
-                  <form action="../process/cart_action.php" method="POST" class="form-add-to-cart" style="margin: 0;">
+                  <form action="../process/cart_action.php" method="POST" class="form-add-to-cart">
                       <input type="hidden" name="id_menu" value="<?= $row['id_menu'] ?>">
                       <input type="hidden" name="action" value="add">
                       <button type="submit" class="btn-add" title="Tambah ke Keranjang">

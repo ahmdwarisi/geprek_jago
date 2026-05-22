@@ -212,7 +212,8 @@ main { flex: 1; } /* Memastikan konten utama mengambil sisa ruang agar footer te
 .contact-title { font-size: 2.25rem; font-weight: 800; color: var(--primary); margin-bottom: 1.5rem; }
 .contact-desc { color: var(--text-muted); margin-bottom: 2rem; font-size: 1.125rem; line-height: 1.75; }
 .contact-info-list { display: flex; flex-direction: column; gap: 1.5rem; }
-.contact-info-item { display: flex; align-items: center; gap: 1rem; }
+.contact-info-item { display: flex; align-items: center; gap: 1.5rem; background-color: white; padding: 1.5rem; border-radius: 1.5rem; border: 1px solid var(--surface-border); box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); transition: all 0.3s ease; }
+.contact-info-item:hover { transform: translateY(-5px); box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1); border-color: rgba(13, 68, 41, 0.2); }
 .contact-icon { width: 3rem; height: 3rem; background-color: #ecfdf5; color: var(--primary); border-radius: 1rem; display: flex; align-items: center; justify-content: center; }
 .contact-info-label { font-size: 0.75rem; color: var(--text-muted); font-weight: 700; text-transform: uppercase; margin-bottom: 0.25rem; }
 .contact-info-value { font-weight: 700; color: var(--text-main); }
@@ -286,9 +287,6 @@ main { flex: 1; } /* Memastikan konten utama mengambil sisa ruang agar footer te
 .radio-group { display: grid; gap: 1rem; }
 .radio-group-2 { grid-template-columns: repeat(1, 1fr); }
 @media (min-width: 640px) { .radio-group-2 { grid-template-columns: repeat(2, 1fr); } }
-@media (max-width: 1023px) {
-    .checkout-summary { position: static; top: auto; }
-}
 
 .radio-card { display: block; }
 .radio-card input[type="radio"] { display: none; }
@@ -305,9 +303,11 @@ main { flex: 1; } /* Memastikan konten utama mengambil sisa ruang agar footer te
 .input-group { display: flex; align-items: stretch; width: 100%; }
 .input-prefix { padding: 0.75rem 1rem; background: var(--surface); border: 1px solid var(--surface-border); border-right: none; border-radius: 0.75rem 0 0 0.75rem; color: var(--text-muted); font-weight: 600; display: flex; align-items: center; }
 .input-group .form-input { border-radius: 0 0.75rem 0.75rem 0; flex: 1; border: 1px solid var(--surface-border); }
-.input-group .form-input:focus { border-color: var(--primary); box-shadow: 0 0 0 2px rgba(13, 68, 41, 0.2); }
 
 .checkout-summary { background: white; padding: 1.5rem; border: 1px solid var(--surface-border); border-radius: 1.5rem; position: sticky; top: 100px; box-shadow: 0 1px 2px rgba(0,0,0,0.05); }
+@media (max-width: 1023px) {
+    .checkout-summary { position: static; top: auto; }
+}
 .checkout-item { display: flex; gap: 1rem; margin-bottom: 1.25rem; }
 .checkout-item-img { width: 4rem; height: 4rem; border-radius: 0.75rem; object-fit: cover; background: var(--surface); }
 
@@ -327,7 +327,6 @@ main { flex: 1; } /* Memastikan konten utama mengambil sisa ruang agar footer te
     border-radius: 20px;
     width: 100%;
     max-width: 350px;
-    font-family: inherit; /* Mengikuti font Plus Jakarta Sans bawaan website */
     position: relative;
     box-shadow: 0 10px 20px rgba(0,0,0,0.1);
     display: flex;
@@ -375,6 +374,40 @@ main { flex: 1; } /* Memastikan konten utama mengambil sisa ruang agar footer te
     font-weight: bold;
     letter-spacing: 1px;
     margin-bottom: 5px;
+}
+
+/* Kotak Tombol Lokasi */
+.map-link-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    height: 100px;
+    background-color: rgba(255, 255, 255, 0.08); /* Transparan menyesuaikan tema card */
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    transition: all 0.3s ease;
+}
+
+/* Efek Hover */
+.map-link-box:hover {
+    background-color: rgba(255, 255, 255, 0.15);
+    transform: translateY(-3px);
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+/* Gaya Ikon Maps */
+.map-link-box .material-symbols-outlined {
+    font-size: 40px !important;
+    color: rgba(255, 255, 255, 0.3); /* Transparan kalem seperti di gambar */
+}
+
+/* Teks tambahan di dalam tombol (opsional) */
+.map-text {
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.6);
+    font-weight: 500;
 }
 
 .count-terjual { font-size: 24px; font-weight: bold; }

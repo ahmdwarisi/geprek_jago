@@ -134,7 +134,7 @@ if ($query_bestseller && mysqli_num_rows($query_bestseller) > 0) {
         <div class="admin-content">
             <!-- Topbar -->
             <header class="admin-topbar">
-                <h2 style="font-size: 1.125rem; font-weight: 700; color: var(--primary);">Ringkasan Bisnis</h2>
+                <h2 style="font-size: 1.125rem; font-weight: 700; color: var(--primary);">Ringkasan Jago</h2>
                 <div style="display: flex; align-items: center; gap: 1rem;">
                     <span class="material-symbols-outlined" style="color: var(--text-muted); cursor: pointer;">notifications</span>
                     <div style="display: flex; align-items: center; gap: 0.5rem; font-weight: 600; font-size: 0.875rem;">

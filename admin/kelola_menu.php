@@ -51,7 +51,7 @@ $total_habis = $query_habis ? mysqli_fetch_assoc($query_habis)['total'] : 0;
         <div class="admin-content">
             <!-- Topbar -->
             <header class="admin-topbar">
-                <h2 style="font-size: 1.125rem; font-weight: 700; color: var(--primary);">Geprek Jago</h2>
+                <h2 style="font-size: 1.125rem; font-weight: 700; color: var(--primary);">Manajemen Menu</h2>
                 <div style="display: flex; align-items: center; gap: 1rem;">
                     <span class="material-symbols-outlined" style="color: var(--text-muted); cursor: pointer;">notifications</span>
                     <div style="display: flex; align-items: center; gap: 0.5rem; font-weight: 600; font-size: 0.875rem;">
