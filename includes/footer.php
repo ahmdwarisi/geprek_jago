@@ -1,5 +1,5 @@
     <footer class="footer">
-        <div class="container">
+        <div class="container mx-auto px-3 sm:px-4">
             <div class="grid-4">
                 <div class="footer-col">
                     <h3>Geprek Jago</h3>
@@ -22,6 +22,7 @@
                 </div>
 <div class="footer-col">
     <h4>Lokasi Kami</h4>
+    <p class="footer-address">
     <p>
         Perumahan Telang Indah, Telang, Kec. Kamal, Kabupaten Bangkalan, Jawa Timur 69162
     </p>

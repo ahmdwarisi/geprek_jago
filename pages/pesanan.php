@@ -3,7 +3,7 @@ require_once '../config/database.php';
 include '../includes/header.php'; 
 ?>
 
-<main class="container section">
+<main class="container mx-auto px-3 sm:px-4 section">
     <div class="section-header center">
         <h2>Riwayat Pesanan</h2>
         <p>Pantau status pesananmu di sini.</p>

@@ -6,7 +6,7 @@ include '../includes/header.php';
 <main>
     <!-- Bagian Header Kontak -->
     <section class="section section-bg-primary">
-        <div class="container">
+        <div class="container mx-auto px-3 sm:px-4">
             <div class="section-header center" style="margin-bottom: 0;">
                 <h1 style="color: white; font-size: 2.5rem; font-weight: 800; margin-bottom: 1rem;">Hubungi Kami</h1>
                 <p style="color: rgba(255, 255, 255, 0.9); font-size: 1.125rem; max-width: 600px; margin: 0 auto;">
@@ -17,7 +17,7 @@ include '../includes/header.php';
     </section>
 
     <!-- Bagian Info & Form Kontak -->
-    <section class="section container">
+    <section class="section container mx-auto px-3 sm:px-4">
         <div class="grid-2 contact-wrapper" style="align-items: start;">
             <div>
             <div class="contact-info-list">

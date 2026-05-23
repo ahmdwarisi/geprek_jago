@@ -21,7 +21,7 @@ if (isset($_SESSION['cart'])) {
 </head>
 <body>
     <nav class="navbar">
-        <div class="container navbar-container">
+        <div class="container mx-auto px-3 sm:px-4 navbar-container">
             <a href="index.php" class="navbar-logo">Geprek Jago</a>
             
             <div class="nav-links">

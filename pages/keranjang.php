@@ -4,7 +4,7 @@ include '../includes/header.php';
 ?>
 
 <main class="section">
-    <div class="container">
+    <div class="container mx-auto px-3 sm:px-4">
         <?php
     $subtotal = 0;
     $cart_items_data = []; // Menyimpan data menu yang ada di keranjang

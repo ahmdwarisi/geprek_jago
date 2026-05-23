@@ -1,4 +1,4 @@
-# Geprek Jago 🍗
+# Geprek Jago 
 
 Project sistem informasi untuk pengelolaan usaha Geprek Jago.
 

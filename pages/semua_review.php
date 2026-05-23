@@ -4,7 +4,7 @@ include '../includes/header.php';
 ?>
 
 <main class="section section-bg-surface" style="min-height: calc(100vh - 200px);">
-    <div class="container">
+    <div class="container mx-auto px-3 sm:px-4">
         <div class="section-header center">
             <h2>Semua Ulasan Jagoan</h2>
             <p>Apa kata mereka yang sudah mencoba kelezatan Geprek Jago?</p>

@@ -49,7 +49,7 @@ include '../includes/header.php';
 <main>
     <!-- Bagian Detail Utama -->
     <section class="section" style="padding-top: 2rem;">
-        <div class="container">
+        <div class="container mx-auto px-3 sm:px-4">
             <!-- Breadcrumb -->
             <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 2rem; font-size: 0.875rem; color: var(--text-muted); font-weight: 600;">
                 <a href="menu.php" style="transition: color 0.2s; display: flex; align-items: center; gap: 0.25rem;" onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='var(--text-muted)'">
@@ -132,7 +132,7 @@ include '../includes/header.php';
 
     <!-- Bagian Rekomendasi "Lengkapi Hidanganmu" -->
     <section class="section section-bg-surface">
-        <div class="container">
+        <div class="container mx-auto px-3 sm:px-4">
             <div class="section-header" style="align-items: center;">
                 <div>
                     <h2>Lengkapi Hidanganmu</h2>

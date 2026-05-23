@@ -24,7 +24,7 @@ while ($row = mysqli_fetch_assoc($query)) {
 $tarif_per_km = 3000; // Mengatur harga per kilometer
 ?>
 
-<main class="container section">
+<main class="container mx-auto px-3 sm:px-4 section">
 
     <!-- Loading Overlay (Simulated Integration) -->
     <div id="loadingOverlay" class="loading-overlay">

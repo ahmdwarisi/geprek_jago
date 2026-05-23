@@ -1,7 +1,7 @@
 <?php require_once '../config/database.php'; ?>
 <?php include '../includes/header.php'; ?> 
 
-<main class="container section">
+<main class="container mx-auto px-3 sm:px-4 section">
     <div class="section-header" style="align-items: center; flex-wrap: wrap; gap: 1.5rem;">
         <div>
             <h2>Menu Pilihan Juara</h2>

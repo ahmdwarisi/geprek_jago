@@ -6,7 +6,7 @@
       <div class="hero-bg">
         <img alt="Hero Geprek" src="../assets/img/foto-sampul-baru.jpg">
       </div>
-      <div class="container hero-content grid-2 items-center">
+      <div class="container mx-auto px-3 sm:px-4 hero-content grid-2 items-center">
         <div>
           <h1>Geprek Jago - <br><span>Pedasnya Juara!</span></h1>
           <p>
@@ -30,7 +30,7 @@
 
     <!-- Best Seller Section -->
     <section class="section section-bg-surface">
-      <div class="container">
+      <div class="container mx-auto px-3 sm:px-4">
         <div class="section-header">
           <div>
             <h2>Menu Terlaris</h2>
@@ -84,7 +84,7 @@
 
     <!-- Why Choose Us -->
     <section class="section section-bg-primary" id="keunggulan">
-      <div class="container">
+      <div class="container mx-auto px-3 sm:px-4">
         <div class="section-header center">
           <h2>Mengapa Geprek Jago?</h2>
           <div class="divider"></div>
@@ -117,7 +117,7 @@
 
     <!-- Testimonials -->
     <section class="section section-bg-surface" id="testimoni">
-      <div class="container">
+      <div class="container mx-auto px-3 sm:px-4">
         <div class="section-header center">
           <h2>Apa Kata Jagoan?</h2>
           <div class="divider"></div>
