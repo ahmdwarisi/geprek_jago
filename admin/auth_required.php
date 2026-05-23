@@ -12,3 +12,16 @@ if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== tru
     header("Location: login_admin.php");
     exit();
 }
+
+// Waktu tidak aktif maksimal dalam detik (3 jam = 10800 detik)
+$timeout_duration = 10800;
+
+if (isset($_SESSION['last_activity']) && (time() - $_SESSION['last_activity']) > $timeout_duration) {
+    session_unset();
+    session_destroy();
+    header("Location: login_admin.php?error=timeout");
+    exit();
+}
+
+// Perbarui waktu aktivitas terakhir untuk setiap request
+$_SESSION['last_activity'] = time();

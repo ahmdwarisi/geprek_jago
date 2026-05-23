@@ -66,10 +66,17 @@ if (isset($_SESSION['admin_logged_in'])) {
         </div>
 
         <?php if(isset($_GET['error'])): ?>
+          <?php if($_GET['error'] == 'timeout'): ?>
+          <div class="bg-orange-50 text-orange-600 p-3 rounded-xl text-xs font-bold flex items-center gap-2 border border-orange-100">
+            <span class="material-symbols-outlined text-sm">schedule</span>
+            <span>Sesi Anda telah berakhir karena tidak aktif. Silakan login kembali.</span>
+          </div>
+          <?php else: ?>
           <div class="bg-red-50 text-red-600 p-3 rounded-xl text-xs font-bold flex items-center gap-2 border border-red-100">
             <span class="material-symbols-outlined text-sm">error</span>
             <span>Email atau Password yang Anda masukkan salah.</span>
           </div>
+          <?php endif; ?>
         <?php endif; ?>
 
         <form action="../process/auth.php" method="POST" class="flex flex-col gap-5">

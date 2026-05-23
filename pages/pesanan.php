@@ -3,7 +3,7 @@ require_once '../config/database.php';
 include '../includes/header.php'; 
 ?>
 
-<main class="container section" style="max-width: 800px;">
+<main class="container section">
     <div class="section-header center">
         <h2>Riwayat Pesanan</h2>
         <p>Pantau status pesananmu di sini.</p>

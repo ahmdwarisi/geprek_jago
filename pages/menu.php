@@ -15,23 +15,35 @@
 
     <div class="grid-4">
         <?php
-        $query = mysqli_query($conn, "SELECT * FROM menu");
+        // Menambahkan query untuk mengambil rata-rata rating review
+        $query = mysqli_query($conn, "SELECT m.*, COALESCE(AVG(r.rating), 0) AS avg_rating FROM menu m LEFT JOIN review r ON r.id_menu = m.id_menu GROUP BY m.id_menu");
         if(mysqli_num_rows($query) > 0) {
             while($row = mysqli_fetch_assoc($query)) {
+                $avgRating = number_format((float) $row['avg_rating'], 1);
         ?>
             <div class="menu-card">
-                <div class="menu-card-img" style="position: relative;">
-                    <img src="../assets/img/<?= htmlspecialchars($row['gambar']) ?>" alt="<?= htmlspecialchars($row['nama_menu']) ?>">
+                <a href="detail_menu.php?id=<?= $row['id_menu'] ?>" style="display: block; position: relative;">
+                    <div class="menu-card-img">
+                        <img src="../assets/img/<?= htmlspecialchars($row['gambar']) ?>" alt="<?= htmlspecialchars($row['nama_menu']) ?>">
+                    </div>
                     <?php if($row['stok'] <= 0): ?>
-                        <div style="position: absolute; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(2px); display: flex; align-items: center; justify-content: center;">
+                        <div style="position: absolute; inset: 0; background: rgba(0,0,0,0.5); backdrop-filter: blur(2px); display: flex; align-items: center; justify-content: center; z-index: 10;">
                             <span style="background: var(--red-badge); color: white; padding: 0.25rem 1rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase;">Habis</span>
                         </div>
                     <?php endif; ?>
-                </div>
+                </a>
                 
                 <div class="menu-card-body">
                     <div class="menu-card-title-row">
-                        <h3><?= htmlspecialchars($row['nama_menu']) ?></h3>
+                        <a href="detail_menu.php?id=<?= $row['id_menu'] ?>" style="text-decoration: none; color: inherit;">
+                            <h3 style="transition: color 0.2s;" onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='inherit'"><?= htmlspecialchars($row['nama_menu']) ?></h3>
+                        </a>
+                        <?php if ($avgRating > 0): ?>
+                        <div class="menu-rating">
+                            <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+                            <span><?= $avgRating ?></span>
+                        </div>
+                        <?php endif; ?>
                     </div>
                     <p class="menu-card-desc"><?= htmlspecialchars($row['deskripsi']) ?></p>
                     
@@ -40,8 +52,8 @@
                         <form action="../process/cart_action.php" method="POST" class="form-add-to-cart" style="margin: 0;">
                             <input type="hidden" name="id_menu" value="<?= $row['id_menu'] ?>">
                             <input type="hidden" name="action" value="add">
-                            <button type="submit" class="btn-add" title="Tambah ke Keranjang">
-                                <span class="material-symbols-outlined">add_shopping_cart</span>
+                            <button type="submit" class="btn-add" title="Tambah ke Keranjang" <?= $row['stok'] <= 0 ? 'disabled' : '' ?>>
+                                <span class="material-symbols-outlined">add</span>
                             </button>
                         </form>
                     </div>

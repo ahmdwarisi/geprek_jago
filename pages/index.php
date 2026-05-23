@@ -124,7 +124,7 @@
         </div>
         <div class="testi-wrap">
           <?php
-          $query_reviews = mysqli_query($conn, "SELECT * FROM review ORDER BY created_at DESC LIMIT 4");
+          $query_reviews = mysqli_query($conn, "SELECT * FROM review ORDER BY created_at DESC LIMIT 3");
           if ($query_reviews && mysqli_num_rows($query_reviews) > 0) {
               while ($review = mysqli_fetch_assoc($query_reviews)) {
                   $rating = (int) round($review['rating']);
@@ -150,6 +150,11 @@
           }
           ?>
         </div>
+        <div style="text-align: center; margin-top: 2.5rem;">
+          <a href="semua_review.php" class="btn-primary" style="background-color: white; color: var(--primary); border: 1px solid var(--surface-border); box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);">
+            Review Lainnya
+          </a>
+        </div>
       </div>
     </section>
   </main>
@@ -161,10 +166,10 @@
 
         cartForms.forEach(form => {
             form.addEventListener('submit', function(e) {
-                e.preventDefault(); // Tahan pengiriman form (Mencegah reload halaman)
+                e.preventDefault(); 
                 
                 const formData = new FormData(this);
-                formData.append('ajax', '1'); // Penanda bahwa ini adalah request AJAX
+                formData.append('ajax', '1');
                 
                 // Animasi muter pada tombol cart saat proses penambahan
                 const btn = this.querySelector('button');
@@ -175,19 +180,19 @@
                     method: 'POST',
                     body: formData
                 })
-                .then(response => response.text()) // Baca sebagai teks dulu agar tidak langsung crash
+                .then(response => response.text()) 
                 .then(text => {
                     try {
-                        const data = JSON.parse(text); // Coba terjemahkan teks menjadi JSON
+                        const data = JSON.parse(text);
                         if (data.status === 'success') {
-                            cartBadge.textContent = data.cart_count; // Update notifikasi angka keranjang di Navbar
+                            cartBadge.textContent = data.cart_count;
                             
                             // Animasi tombol berubah menjadi centang hijau sebentar
                             btn.innerHTML = '<span class="material-symbols-outlined">check</span>';
                             btn.style.backgroundColor = '#059669'; 
                             
                             setTimeout(() => {
-                                btn.innerHTML = originalContent; // Kembalikan tombol ke semula
+                                btn.innerHTML = originalContent; 
                                 btn.style.backgroundColor = ''; 
                             }, 1000);
                         } else if (data.status === 'error') {
