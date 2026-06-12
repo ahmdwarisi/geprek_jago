@@ -278,7 +278,23 @@ if ($query_bestseller && mysqli_num_rows($query_bestseller) > 0) {
         </div>
     </div>
 
+    <!-- Modal Best Seller Dinamis -->
+    <div id="modalBestSeller" class="modal-overlay">
+        <div class="modal-content" style="max-width: 500px;">
+            <div class="modal-header">
+                <h3 id="modalBestSellerTitle">Menu Terlaris</h3>
+                <button class="btn-close" onclick="closeModal('modalBestSeller')"><span class="material-symbols-outlined">close</span></button>
+            </div>
+            <div class="modal-body" id="modalBestSellerBody">
+                <div style="text-align: center; padding: 2rem;">Loading...</div>
+            </div>
+        </div>
+    </div>
+
 <script>
+    function openModal(id) { document.getElementById(id).classList.add('active'); }
+    function closeModal(id) { document.getElementById(id).classList.remove('active'); }
+
     document.addEventListener('DOMContentLoaded', function() {
         const ctx = document.getElementById('salesChart').getContext('2d');
         const salesChart = new Chart(ctx, {
@@ -299,6 +315,56 @@ if ($query_bestseller && mysqli_num_rows($query_bestseller) > 0) {
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
+                onHover: (event, chartElement) => {
+                    // Ubah kursor jadi telunjuk saat arahkan ke batang grafik
+                    event.native.target.style.cursor = chartElement[0] ? 'pointer' : 'default';
+                },
+                onClick: (event, elements, chart) => {
+                    if (elements.length > 0) {
+                        const index = elements[0].index;
+                        const filter = '<?= $chart_filter ?>';
+                        
+                        openModal('modalBestSeller');
+                        const modalBody = document.getElementById('modalBestSellerBody');
+                        const modalTitle = document.getElementById('modalBestSellerTitle');
+                        
+                        // Tampilkan animasi loading
+                        modalBody.innerHTML = '<div style="text-align: center; padding: 2rem; color: var(--text-muted);"><span class="material-symbols-outlined" style="animation: spin 1s linear infinite; font-size: 2rem;">sync</span><p style="margin-top:0.5rem;">Memuat data...</p></div>';
+                        
+                        fetch(`get_bestsellers.php?filter=${filter}&index=${index}`)
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data.status === 'success') {
+                                    modalTitle.textContent = data.title;
+                                    if (data.data.length > 0) {
+                                        let html = '<ul style="list-style: none; padding: 0; margin: 0;">';
+                                        data.data.forEach((item, i) => {
+                                            html += `
+                                                <li style="display: flex; align-items: center; justify-content: space-between; padding: 1rem 0; border-bottom: 1px solid var(--surface-border);">
+                                                    <div style="display: flex; align-items: center; gap: 1rem;">
+                                                        <span style="font-weight: 800; color: var(--text-muted); font-size: 1.25rem; width: 1.5rem; text-align: center;">${i+1}</span>
+                                                        <img src="../assets/img/${item.gambar}" alt="${item.nama_menu}" style="width: 3rem; height: 3rem; border-radius: 0.5rem; object-fit: cover;">
+                                                        <span style="font-weight: 600; color: var(--text-main);">${item.nama_menu}</span>
+                                                    </div>
+                                                    <div style="font-weight: 700; color: #059669; background: #d1fae5; padding: 0.25rem 0.75rem; border-radius: 999px; font-size: 0.875rem;">
+                                                        ${item.total_terjual} porsi
+                                                    </div>
+                                                </li>`;
+                                        });
+                                        html += '</ul>';
+                                        modalBody.innerHTML = html;
+                                    } else {
+                                        modalBody.innerHTML = '<div style="text-align: center; padding: 2rem; color: var(--text-muted);">Belum ada penjualan pada periode ini.</div>';
+                                    }
+                                } else {
+                                    modalBody.innerHTML = '<div style="text-align: center; padding: 2rem; color: #dc2626;">Gagal memuat data.</div>';
+                                }
+                            })
+                            .catch(err => {
+                                modalBody.innerHTML = '<div style="text-align: center; padding: 2rem; color: #dc2626;">Terjadi kesalahan sistem.</div>';
+                            });
+                    }
+                },
                 layout: {
                     padding: {
                         top: 18,

@@ -181,6 +181,7 @@ elseif ($filter === 'selesai') $where_clause = "WHERE status = 'selesai'";
 
                                         $metode_pengiriman = $order['metode_pengiriman'] == 'delivery' ? 'Delivery' : 'Makan di Tempat';
                                         $metode_pembayaran = strtoupper($order['metode_pembayaran']);
+                                        $label_lokasi = $order['metode_pengiriman'] == 'delivery' ? 'Alamat Pengiriman' : 'Nomor Meja / Catatan';
 
                                         // Generate Modal HTML Dinamis
                                         $modals_html .= '
@@ -195,7 +196,8 @@ elseif ($filter === 'selesai') $where_clause = "WHERE status = 'selesai'";
                                                         <p style="font-size: 0.75rem; color: var(--text-muted); font-weight: 700; text-transform: uppercase;">Informasi Pelanggan</p>
                                                         <div style="font-weight: 600;">'.htmlspecialchars($order['nama_pelanggan']).'</div>
                                                         <div style="font-size: 0.875rem; color: var(--text-muted);">'.($order['no_hp'] ? htmlspecialchars($order['no_hp']) : '-').'</div>
-                                                        <div style="font-size: 0.875rem; color: var(--text-muted); margin-top: 0.25rem;">'.htmlspecialchars($order['alamat']).'</div>
+                                                        <p style="font-size: 0.75rem; color: var(--text-muted); font-weight: 700; text-transform: uppercase; margin-top: 0.75rem;">'.$label_lokasi.'</p>
+                                                        <div style="font-size: 0.875rem; color: var(--text-main); font-weight: 600;">'.htmlspecialchars($order['alamat'] ?: '-').'</div>
                                                     </div>
                                                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem;">
                                                         <div>
@@ -213,7 +215,8 @@ elseif ($filter === 'selesai') $where_clause = "WHERE status = 'selesai'";
                                                         <div style="border-top: 1px dashed var(--surface-border); margin-top: 1rem; padding-top: 1rem; display: flex; justify-content: space-between; font-weight: 800; color: var(--primary); font-size: 1.125rem;">
                                                             <span>Total Harga</span>
                                                             <span>Rp '.number_format($order['total_harga'], 0, ',', '.').'</span>
-                                                        </div>                                                        '.($order['deskripsi'] ? '<div style="margin-top: 1.5rem; padding: 1rem; background: #f3f4f6; border-radius: 0.75rem; border-left: 3px solid var(--primary);"><p style="font-size: 0.75rem; color: var(--text-muted); font-weight: 700; text-transform: uppercase; margin-bottom: 0.5rem;">Catatan Pelanggan</p><p style="font-size: 0.875rem; color: var(--text-main);">'.htmlspecialchars($order['deskripsi']).'</p></div>' : '').'                                                    </div>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>';

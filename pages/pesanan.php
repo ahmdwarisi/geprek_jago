@@ -22,6 +22,7 @@ include '../includes/header.php';
         // Cek apakah ada session my_orders dari transaksi checkout sebelumnya
         $has_completed_order = false;
         $review_customer_name = '';
+        $modals_html = '';
         if (!empty($_SESSION['my_orders'])) {
             $order_ids = implode(',', array_map('intval', $_SESSION['my_orders']));
             $query_orders = mysqli_query($conn, "SELECT * FROM orders WHERE id_order IN ($order_ids) ORDER BY created_at DESC");
@@ -37,14 +38,75 @@ include '../includes/header.php';
 
                     // Ambil detail menu untuk pesanan ini
                     $id_order = $order['id_order'];
-                    $query_detail = mysqli_query($conn, "SELECT od.jumlah, m.nama_menu FROM order_detail od JOIN menu m ON od.id_menu = m.id_menu WHERE od.id_order = $id_order");
+                    $query_detail = mysqli_query($conn, "SELECT od.*, m.nama_menu FROM order_detail od JOIN menu m ON od.id_menu = m.id_menu WHERE od.id_order = $id_order");
                     $item_names = [];
+                    $detail_items_html = '';
+                    $subtotal_items = 0;
                     while ($detail = mysqli_fetch_assoc($query_detail)) {
                         $item_names[] = $detail['jumlah'] . 'x ' . $detail['nama_menu'];
+                        $detail_items_html .= '
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem; font-size: 0.875rem;">
+                            <div><span style="font-weight: 700;">'.$detail['jumlah'].'x</span> '.htmlspecialchars($detail['nama_menu']).'</div>
+                            <div style="font-weight: 600;">Rp '.number_format($detail['subtotal'], 0, ',', '.').'</div>
+                        </div>';
+                        $subtotal_items += $detail['subtotal'];
                     }
                     $menu_list = implode(', ', $item_names);
+                    
+                    $ongkir = $order['total_harga'] - $subtotal_items;
+                    $metode_pengiriman = $order['metode_pengiriman'] == 'delivery' ? 'Delivery' : 'Makan di Tempat';
+                    $metode_pembayaran = strtoupper($order['metode_pembayaran']);
+
+                    $label_lokasi = $order['metode_pengiriman'] == 'delivery' ? 'Alamat Pengiriman' : 'Nomor Meja / Catatan';
+                    $alamat_pesanan = htmlspecialchars($order['alamat'] ?: '-');
+
+                    $modals_html .= '
+                    <div id="modalOrderDetail'.$id_order.'" class="modal-overlay" role="dialog" aria-modal="true">
+                        <div class="modal-content" style="max-width: 500px;">
+                            <div class="modal-header">
+                                <h3>Detail Pesanan #GJ-'.str_pad($id_order, 4, '0', STR_PAD_LEFT).'</h3>
+                                <button type="button" class="btn-icon" onclick="document.getElementById(\'modalOrderDetail'.$id_order.'\').classList.remove(\'active\')" style="background:none;border:none;font-size:1.5rem;cursor:pointer;">×</button>
+                            </div>
+                            <div class="modal-body">
+                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem;">
+                                    <div>
+                                        <p style="font-size: 0.75rem; color: var(--text-muted); font-weight: 700; text-transform: uppercase;">Metode Makan</p>
+                                        <div style="font-weight: 600; font-size: 0.875rem;">'.$metode_pengiriman.'</div>
+                                    </div>
+                                    <div>
+                                        <p style="font-size: 0.75rem; color: var(--text-muted); font-weight: 700; text-transform: uppercase;">Pembayaran</p>
+                                        <div style="font-weight: 600; font-size: 0.875rem;">'.$metode_pembayaran.'</div>
+                                    </div>
+                                </div>
+                                <div style="margin-bottom: 1.5rem;">
+                                    <p style="font-size: 0.75rem; color: var(--text-muted); font-weight: 700; text-transform: uppercase;">'.$label_lokasi.'</p>
+                                    <div style="font-weight: 600; font-size: 0.875rem; line-height: 1.4;">'.$alamat_pesanan.'</div>
+                                </div>
+                                <div>
+                                    <p style="font-size: 0.75rem; color: var(--text-muted); font-weight: 700; text-transform: uppercase; margin-bottom: 0.5rem;">Daftar Pesanan</p>
+                                    '.$detail_items_html;
+                                    
+                    if ($ongkir > 0) {
+                        $modals_html .= '
+                                    <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem; font-size: 0.875rem;">
+                                        <div><span style="font-weight: 700;">Ongkos Kirim</span></div>
+                                        <div style="font-weight: 600;">Rp '.number_format($ongkir, 0, ',', '.').'</div>
+                                    </div>';
+                    }
+                
+                    $modals_html .= '
+                                    <div style="border-top: 1px dashed var(--surface-border); margin-top: 1rem; padding-top: 1rem; display: flex; justify-content: space-between; font-weight: 800; color: var(--primary); font-size: 1.125rem;">
+                                        <span>Total Harga</span>
+                                        <span>Rp '.number_format($order['total_harga'], 0, ',', '.').'</span>
+                                    </div>';
+                                    
+                    $modals_html .= '
+                                </div>
+                            </div>
+                        </div>
+                    </div>';
         ?>
-                <div class="order-card">
+                <div class="order-card" onclick="document.getElementById('modalOrderDetail<?= $order['id_order'] ?>').classList.add('active')" style="cursor: pointer; transition: all 0.2s ease;" onmouseover="this.style.borderColor='var(--primary)'; this.style.boxShadow='0 4px 12px rgba(13,68,41,0.1)';" onmouseout="this.style.borderColor=''; this.style.boxShadow='';">
                     <div class="order-header">
                         <div>
                             <p class="order-id-label">ID Pesanan</p>
@@ -59,9 +121,12 @@ include '../includes/header.php';
                             <p class="order-items-text"><?= htmlspecialchars($menu_list) ?></p>
                             <p class="order-date"><?= date('d M Y • H:i', strtotime($order['created_at'])) ?> WIB</p>
                         </div>
-                        <div class="order-total-wrap">
-                            <p class="order-total-label">Total Bayar</p>
-                            <p class="order-total-value">Rp <?= number_format($order['total_harga'], 0, ',', '.') ?></p>
+                        <div class="order-total-wrap" style="display: flex; justify-content: space-between; align-items: center; border-top: 1px dashed var(--surface-border); margin-top: 1rem; padding-top: 1rem;">
+                            <div>
+                                <p class="order-total-label" style="font-size: 0.75rem; color: var(--text-muted); font-weight: 700; text-transform: uppercase; margin-bottom: 0.25rem;">Total Bayar</p>
+                                <p class="order-total-value" style="font-size: 1.125rem; font-weight: 800; color: var(--primary);">Rp <?= number_format($order['total_harga'], 0, ',', '.') ?></p>
+                            </div>
+                            <span class="material-symbols-outlined" style="color: var(--text-muted);">chevron_right</span>
                         </div>
                     </div>
                 </div>
@@ -83,6 +148,8 @@ include '../includes/header.php';
             </div>
         <?php endif; ?>
     </div>
+
+    <?= $modals_html ?? '' ?>
 
     <div id="reviewModal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="reviewModalTitle">
         <div class="modal-content">
@@ -154,10 +221,13 @@ include '../includes/header.php';
             });
         });
 
-        reviewModal.addEventListener('click', function(event) {
-            if (event.target === reviewModal) {
-                reviewModal.classList.remove('active');
+    // Menutup semua modal jika mengklik di luar area modal content
+    document.querySelectorAll('.modal-overlay').forEach(function(modal) {
+        modal.addEventListener('click', function(event) {
+            if (event.target === modal) {
+                modal.classList.remove('active');
             }
+        });
         });
     });
 </script>

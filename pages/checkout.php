@@ -100,9 +100,9 @@ $tarif_per_km = 3000; // Mengatur harga per kilometer
                 </div>
 
                 <div class="form-group">
-                    <label class="form-label">Alamat Pengiriman / Catatan Meja</label>
-                    <textarea class="form-input" name="alamat" rows="3" placeholder="Contoh: Meja 12 (Makan di Tempat) atau Jl. Melati No. 5 (Delivery)" required></textarea>
-                    <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.5rem; font-style: italic;">* Mohon isi nomor meja jika makan di tempat, atau alamat lengkap untuk pengiriman.</p>
+                    <label class="form-label" id="alamat_label">Nomor Meja</label>
+                    <textarea class="form-input" name="alamat" id="input_alamat" rows="3" placeholder="Contoh: Meja nomor 12" required></textarea>
+                    <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.5rem; font-style: italic;" id="alamat_hint">* Mohon isi nomor meja jika makan di tempat.</p>
                 </div>
             </section>
 
@@ -206,6 +206,9 @@ $tarif_per_km = 3000; // Mengatur harga per kilometer
         const inputJarak = document.getElementById('input_jarak');
         const hpGroup = document.getElementById('hp_group');
         const inputHp = document.getElementById('input_hp');
+        const inputAlamat = document.getElementById('input_alamat');
+        const alamatLabel = document.getElementById('alamat_label');
+        const alamatHint = document.getElementById('alamat_hint');
         const ongkirDisplay = document.getElementById('ongkir-display');
         const totalDisplay = document.getElementById('total-display');
         
@@ -226,6 +229,10 @@ $tarif_per_km = 3000; // Mengatur harga per kilometer
                 hpGroup.style.display = 'block'; // Tampilkan input HP
                 inputHp.required = true; // Wajib isi HP
                 
+                alamatLabel.textContent = 'Alamat Pengiriman';
+                inputAlamat.placeholder = 'Contoh: Jl. Melati No 5';
+                alamatHint.textContent = '* Mohon isi alamat lengkap untuk pengiriman.';
+                
                 const jarak = parseFloat(inputJarak.value) || 0; // Ambil nilai jarak dari input
                 ongkir = jarak * tarifPerKm; // Hitung: jarak x tarif per KM
                 
@@ -236,6 +243,10 @@ $tarif_per_km = 3000; // Mengatur harga per kilometer
                 areaGroup.style.display = 'none'; // Sembunyikan input jarak
                 hpGroup.style.display = 'none'; // Sembunyikan input HP
                 inputHp.required = false; // Tidak wajib isi HP
+                
+                alamatLabel.textContent = 'Nomor Meja';
+                inputAlamat.placeholder = 'Contoh: Meja nomor 12';
+                alamatHint.textContent = '* Mohon isi nomor meja tempat Anda makan.';
                 
                 ongkir = 0;
                 ongkirDisplay.textContent = 'Gratis';

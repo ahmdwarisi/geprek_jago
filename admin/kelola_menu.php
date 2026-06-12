@@ -215,7 +215,7 @@ $total_habis = $query_habis ? mysqli_fetch_assoc($query_habis)['total'] : 0;
                             <option value="Paket Super Jago">Paket Super Jago</option>
                             <option value="Paket Hemat Jago">Paket Hemat Jago</option>
                             <option value="Paket Mie Jago">Paket Mie Jago</option>
-                            <option value="Minuman">Minuman</option>
+                            <option value="Ala Carte">Ala Carte</option>
                         </select>
                     </div>
                     <div class="form-group">
@@ -268,7 +268,7 @@ $total_habis = $query_habis ? mysqli_fetch_assoc($query_habis)['total'] : 0;
                             <option value="Paket Super Jago">Paket Super Jago</option>
                             <option value="Paket Hemat Jago">Paket Hemat Jago</option>
                             <option value="Paket Mie Jago">Paket Mie Jago</option>
-                            <option value="Minuman">Minuman</option>
+                            <option value="Ala Carte">Ala Carte</option>
                         </select>
                     </div>
                     <div class="form-group">

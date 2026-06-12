@@ -9,18 +9,30 @@
         </div>
         <div style="position: relative; width: 100%; max-width: 300px;">
             <span class="material-symbols-outlined" style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: var(--text-muted);">search</span>
-            <input type="text" placeholder="Cari menu..." style="width: 100%; padding: 0.75rem 1rem 0.75rem 2.75rem; border: 1px solid var(--surface-border); border-radius: 9999px; background-color: var(--surface); outline: none; font-family: inherit;">
+            <input type="text" id="searchInput" placeholder="Cari menu..." style="width: 100%; padding: 0.75rem 1rem 0.75rem 2.75rem; border: 1px solid var(--surface-border); border-radius: 9999px; background-color: var(--surface); outline: none; font-family: inherit;">
         </div>
     </div>
 
-    <div class="grid-4">
-        <?php
-        // Menambahkan query untuk mengambil rata-rata rating review
-        $query = mysqli_query($conn, "SELECT m.*, COALESCE(AVG(r.rating), 0) AS avg_rating FROM menu m LEFT JOIN review r ON r.id_menu = m.id_menu GROUP BY m.id_menu");
+    <?php
+    $kategori_list = ['Paket Super Jago', 'Paket Hemat Jago', 'Paket Mie Jago', 'Ala Carte'];
+    $menu_ada = false;
+
+    foreach ($kategori_list as $kategori) {
+        $query = mysqli_query($conn, "SELECT m.*, COALESCE(AVG(r.rating), 0) AS avg_rating FROM menu m LEFT JOIN review r ON r.id_menu = m.id_menu WHERE m.kategori = '$kategori' GROUP BY m.id_menu");
+        
         if(mysqli_num_rows($query) > 0) {
+            $menu_ada = true;
+            ?>
+            <div class="menu-category-wrapper">
+            <div style="margin-top: 2rem; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 1rem;">
+                <h3 style="font-size: 1.5rem; font-weight: 800; color: var(--text-main); margin: 0;"><?= $kategori ?></h3>
+                <div style="flex: 1; height: 2px; background: var(--surface-border); border-radius: 999px;"></div>
+            </div>
+            <div class="grid-4">
+            <?php
             while($row = mysqli_fetch_assoc($query)) {
                 $avgRating = number_format((float) $row['avg_rating'], 1);
-        ?>
+            ?>
             <div class="menu-card">
                 <a href="detail_menu.php?id=<?= $row['id_menu'] ?>" style="display: block; position: relative;">
                     <div class="menu-card-img">
@@ -59,17 +71,51 @@
                     </div>
                 </div>
             </div>
-        <?php 
+            <?php 
             }
-        } else {
-            echo '<div style="grid-column: 1 / -1; text-align: center;"><p>Belum ada menu yang tersedia.</p></div>';
+            ?>
+            </div>
+            </div>
+            <?php
         }
-        ?>
-    </div>
+    }
+    
+    if (!$menu_ada) { echo '<div style="text-align: center; padding: 3rem 0;"><p>Belum ada menu yang tersedia.</p></div>'; }
+    ?>
+    <div id="noResultMsg" style="display: none; text-align: center; padding: 3rem 0; color: var(--text-muted);"><p>Pencarian menu tidak ditemukan.</p></div>
 </main>
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
+        const searchInput = document.getElementById('searchInput');
+        const categoryWrappers = document.querySelectorAll('.menu-category-wrapper');
+        const noResultMsg = document.getElementById('noResultMsg');
+
+        if (searchInput) {
+            searchInput.addEventListener('input', function() {
+                const searchTerm = this.value.toLowerCase();
+                let totalVisible = 0;
+
+                categoryWrappers.forEach(wrapper => {
+                    const menuCards = wrapper.querySelectorAll('.menu-card');
+                    let hasVisibleCard = false;
+
+                    menuCards.forEach(card => {
+                        const menuName = card.querySelector('h3').textContent.toLowerCase();
+                        const menuDesc = card.querySelector('.menu-card-desc').textContent.toLowerCase();
+
+                        if (menuName.includes(searchTerm) || menuDesc.includes(searchTerm)) { card.style.display = 'block'; hasVisibleCard = true; } 
+                        else { card.style.display = 'none'; }
+                    });
+
+                    wrapper.style.display = hasVisibleCard ? 'block' : 'none';
+                    if (hasVisibleCard) totalVisible++;
+                });
+                
+                noResultMsg.style.display = totalVisible === 0 && searchTerm !== '' ? 'block' : 'none';
+            });
+        }
+
         const cartForms = document.querySelectorAll('.form-add-to-cart');
         const cartBadge = document.querySelector('.cart-badge');
 
