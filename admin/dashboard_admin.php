@@ -35,19 +35,19 @@ if ($chart_filter === 'bulanan') {
         $chart_data[] = $total;
     }
 } else {
-    // Ambil rekap total pendapatan per hari untuk 7 hari terakhir
-    $data_per_hari = [];
-    for ($i = 6; $i >= 0; $i--) {
-        $date_str = date('Y-m-d', strtotime("-$i days"));
-        $data_per_hari[$date_str] = 0; // Default isi angka 0 untuk 7 hari terakhir
-    }
-    $query_chart = mysqli_query($conn, "SELECT DATE(created_at) as tanggal, SUM(total_harga) as total FROM orders WHERE status = 'selesai' AND created_at >= DATE_SUB(CURDATE(), INTERVAL 7 DAY) GROUP BY DATE(created_at)");
+    // Ambil rekap total pendapatan untuk satu minggu penuh: Minggu s.d. Sabtu
+    $week_days = [1 => 'MINGGU', 2 => 'SENIN', 3 => 'SELASA', 4 => 'RABU', 5 => 'KAMIS', 6 => 'JUMAT', 7 => 'SABTU'];
+    $data_per_hari = array_fill(1, 7, 0);
+    $days_since_sunday = date('N') % 7;
+    $start_of_week = date('Y-m-d', strtotime("-$days_since_sunday days"));
+    $end_of_week = date('Y-m-d', strtotime($start_of_week . ' +6 days'));
+
+    $query_chart = mysqli_query($conn, "SELECT DAYOFWEEK(created_at) as hari, SUM(total_harga) as total FROM orders WHERE status = 'selesai' AND DATE(created_at) BETWEEN '$start_of_week' AND '$end_of_week' GROUP BY DAYOFWEEK(created_at)");
     while ($row = mysqli_fetch_assoc($query_chart)) {
-        $data_per_hari[$row['tanggal']] = $row['total'];
+        $data_per_hari[$row['hari']] = $row['total'];
     }
-    $nama_hari = [1 => 'SEN', 2 => 'SEL', 3 => 'RAB', 4 => 'KAM', 5 => 'JUM', 6 => 'SAB', 7 => 'MIN'];
-    foreach ($data_per_hari as $tgl => $total) {
-        $chart_labels[] = $nama_hari[date('N', strtotime($tgl))];
+    foreach ($data_per_hari as $dow => $total) {
+        $chart_labels[] = $week_days[$dow];
         $chart_data[] = $total;
     }
 }
@@ -63,8 +63,14 @@ if ($chart_filter === 'bulanan') {
     $prev_where = "WHERE o.status = 'selesai' AND MONTH(o.created_at) = MONTH(DATE_SUB(CURDATE(), INTERVAL 1 MONTH)) AND YEAR(o.created_at) = YEAR(DATE_SUB(CURDATE(), INTERVAL 1 MONTH))";
     $label_waktu = "bulan lalu";
 } else {
-    $curr_where = "WHERE o.status = 'selesai' AND DATE(o.created_at) >= DATE_SUB(CURDATE(), INTERVAL 7 DAY)";
-    $prev_where = "WHERE o.status = 'selesai' AND DATE(o.created_at) >= DATE_SUB(CURDATE(), INTERVAL 14 DAY) AND DATE(o.created_at) < DATE_SUB(CURDATE(), INTERVAL 7 DAY)";
+    $days_since_sunday = date('N') % 7;
+    $start_of_week = date('Y-m-d', strtotime("-$days_since_sunday days"));
+    $end_of_week = date('Y-m-d', strtotime($start_of_week . ' +6 days'));
+    $previous_week_start = date('Y-m-d', strtotime($start_of_week . ' -7 days'));
+    $previous_week_end = date('Y-m-d', strtotime($start_of_week . ' -1 day'));
+
+    $curr_where = "WHERE o.status = 'selesai' AND DATE(o.created_at) BETWEEN '$start_of_week' AND '$end_of_week'";
+    $prev_where = "WHERE o.status = 'selesai' AND DATE(o.created_at) BETWEEN '$previous_week_start' AND '$previous_week_end'";
     $label_waktu = "minggu lalu";
 }
 
@@ -282,39 +288,56 @@ if ($query_bestseller && mysqli_num_rows($query_bestseller) > 0) {
                 datasets: [{
                     label: 'Statistik Penjualan',
                     data: <?= json_encode($chart_data) ?>,
-                    backgroundColor: '#114227', 
-                    borderRadius: 8, 
+                    backgroundColor: '#114227',
+                    borderRadius: 12,
                     borderSkipped: false,
-                    barThickness: 45 
+                    maxBarThickness: 40,
+                    categoryPercentage: 0.75,
+                    barPercentage: 0.75
                 }]
             },
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
+                layout: {
+                    padding: {
+                        top: 18,
+                        right: 18,
+                        bottom: 18,
+                        left: 18
+                    }
+                },
                 plugins: {
                     legend: {
                         display: false
                     },
                     title: {
-                        display: false 
+                        display: false
                     },
-                    tooltip: { callbacks: { label: function(context) { return 'Rp ' + context.parsed.y.toLocaleString('id-ID'); } } }
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return 'Rp ' + context.parsed.y.toLocaleString('id-ID');
+                            }
+                        }
+                    }
                 },
                 scales: {
                     y: {
-                        display: false, 
+                        display: false,
                         beginAtZero: true
                     },
                     x: {
                         grid: {
-                            display: false, 
+                            display: false,
                             drawBorder: false
                         },
                         ticks: {
-                            color: '#A0A0A0', 
+                            color: '#4B5563',
+                            padding: 10,
                             font: {
-                                size: 12,
-                                weight: 'bold'
+                                size: 13,
+                                weight: '600'
                             }
                         }
                     }
