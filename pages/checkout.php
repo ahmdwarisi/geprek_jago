@@ -69,9 +69,9 @@ $tarif_per_km = 3000; // Mengatur harga per kilometer
                         </div>
                     </label>
                     <label class="radio-card center">
-                        <input type="radio" name="order_method" value="delivery" id="method_delivery">
+                        <input type="radio" name="order_method" value="take_away" id="method_take_away">
                         <div class="radio-content">
-                            <span class="material-symbols-outlined">delivery_dining</span> Delivery
+                            <span class="material-symbols-outlined">takeout_dining</span> Take Away
                         </div>
                     </label>
                 </div>
@@ -90,13 +90,6 @@ $tarif_per_km = 3000; // Mengatur harga per kilometer
                         <span class="input-prefix">+62</span>
                         <input type="tel" name="no_hp" id="input_hp" class="form-input" placeholder="812xxxx">
                     </div>
-                </div>
-
-                <!-- Input Jarak Pengiriman (Disembunyikan default) -->
-                <div class="form-group" id="area_group" style="display: none;">
-                    <label class="form-label">Jarak Pengiriman (KM)</label>
-                    <input type="number" name="jarak_km" id="input_jarak" class="form-input" placeholder="Contoh: 3.5" min="0.1" step="0.1">
-                    <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.5rem; font-style: italic;">* Tarif ongkos kirim: Rp <?= number_format($tarif_per_km, 0, ',', '.') ?> / KM</p>
                 </div>
 
                 <div class="form-group">
@@ -202,8 +195,6 @@ $tarif_per_km = 3000; // Mengatur harga per kilometer
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const methodRadios = document.querySelectorAll('input[name="order_method"]');
-        const areaGroup = document.getElementById('area_group');
-        const inputJarak = document.getElementById('input_jarak');
         const hpGroup = document.getElementById('hp_group');
         const inputHp = document.getElementById('input_hp');
         const inputAlamat = document.getElementById('input_alamat');
@@ -224,44 +215,34 @@ $tarif_per_km = 3000; // Mengatur harga per kilometer
             let ongkir = 0;
             const selectedMethod = document.querySelector('input[name="order_method"]:checked').value;
             
-            if (selectedMethod === 'delivery') {
-                areaGroup.style.display = 'block'; // Tampilkan input jarak
+            if (selectedMethod === 'take_away') {
                 hpGroup.style.display = 'block'; // Tampilkan input HP
                 inputHp.required = true; // Wajib isi HP
                 
-                alamatLabel.textContent = 'Alamat Pengiriman';
-                inputAlamat.placeholder = 'Contoh: Jl. Melati No 5';
-                alamatHint.textContent = '* Mohon isi alamat lengkap untuk pengiriman.';
-                
-                const jarak = parseFloat(inputJarak.value) || 0; // Ambil nilai jarak dari input
-                ongkir = jarak * tarifPerKm; // Hitung: jarak x tarif per KM
-                
-                ongkirDisplay.textContent = formatRupiah(ongkir);
-                ongkirDisplay.style.color = 'var(--text-main)';
-                ongkirDisplay.style.fontWeight = 'normal';
+                alamatLabel.textContent = 'Catatan Pesanan';
+                inputAlamat.placeholder = 'Contoh: Pedas sedang, bungkus pisah';
+                inputAlamat.required = false; // Catatan bersifat opsional
+                alamatHint.textContent = '* Mohon isi catatan pesanan (opsional).';
             } else {
-                areaGroup.style.display = 'none'; // Sembunyikan input jarak
                 hpGroup.style.display = 'none'; // Sembunyikan input HP
                 inputHp.required = false; // Tidak wajib isi HP
                 
                 alamatLabel.textContent = 'Nomor Meja';
                 inputAlamat.placeholder = 'Contoh: Meja nomor 12';
+                inputAlamat.required = true;
                 alamatHint.textContent = '* Mohon isi nomor meja tempat Anda makan.';
-                
-                ongkir = 0;
-                ongkirDisplay.textContent = 'Gratis';
-                ongkirDisplay.style.color = '#059669';
-                ongkirDisplay.style.fontWeight = '600';
             }
+            
+            ongkir = 0;
+            ongkirDisplay.textContent = 'Gratis';
+            ongkirDisplay.style.color = '#059669';
+            ongkirDisplay.style.fontWeight = '600';
 
             const total = subtotal + ongkir;
             totalDisplay.textContent = formatRupiah(total);
         }
 
         methodRadios.forEach(radio => radio.addEventListener('change', calculateTotal));
-        
-        // Update harga secara real-time saat user mengetik jarak
-        inputJarak.addEventListener('input', calculateTotal);
         
         calculateTotal(); // Hitung saat halaman pertama kali dimuat
 

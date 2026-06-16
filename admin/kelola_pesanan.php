@@ -18,6 +18,7 @@ $where_clause = "";
 if ($filter === 'pending') $where_clause = "WHERE status = 'pending'";
 elseif ($filter === 'diproses') $where_clause = "WHERE status = 'diproses'";
 elseif ($filter === 'selesai') $where_clause = "WHERE status = 'selesai'";
+elseif ($filter === 'batal') $where_clause = "WHERE status = 'batal'";
 
 ?>
 <!DOCTYPE html>
@@ -136,6 +137,7 @@ elseif ($filter === 'selesai') $where_clause = "WHERE status = 'selesai'";
                         <a href="?filter=pending" class="<?= $filter == 'pending' ? 'btn-primary' : 'btn-outline' ?>" style="padding: 0.5rem 1rem; <?= $filter != 'pending' ? 'color: var(--text-muted); border-color: var(--surface-border);' : '' ?>">Menunggu</a>
                         <a href="?filter=diproses" class="<?= $filter == 'diproses' ? 'btn-primary' : 'btn-outline' ?>" style="padding: 0.5rem 1rem; <?= $filter != 'diproses' ? 'color: var(--text-muted); border-color: var(--surface-border);' : '' ?>">Diproses</a>
                         <a href="?filter=selesai" class="<?= $filter == 'selesai' ? 'btn-primary' : 'btn-outline' ?>" style="padding: 0.5rem 1rem; <?= $filter != 'selesai' ? 'color: var(--text-muted); border-color: var(--surface-border);' : '' ?>">Selesai</a>
+                        <a href="?filter=batal" class="<?= $filter == 'batal' ? 'btn-primary' : 'btn-outline' ?>" style="padding: 0.5rem 1rem; <?= $filter != 'batal' ? 'color: var(--text-muted); border-color: var(--surface-border);' : '' ?>">Batal</a>
                     </div>
                     <div class="table-responsive">
                         <table class="admin-table">
@@ -165,6 +167,9 @@ elseif ($filter === 'selesai') $where_clause = "WHERE status = 'selesai'";
                                         } elseif($order['status'] == 'selesai') {
                                             $status_text = 'Selesai';
                                             $badge_style = 'background: #d1fae5; color: #059669;'; // Hijau
+                                        } elseif($order['status'] == 'batal') {
+                                            $status_text = 'Batal';
+                                            $badge_style = 'background: #fee2e2; color: #dc2626;'; // Merah
                                         }
 
                                         // --- AMBIL DETAIL PESANAN ---
@@ -179,9 +184,9 @@ elseif ($filter === 'selesai') $where_clause = "WHERE status = 'selesai'";
                                             </div>';
                                         }
 
-                                        $metode_pengiriman = $order['metode_pengiriman'] == 'delivery' ? 'Delivery' : 'Makan di Tempat';
+                                        $metode_pengiriman = $order['metode_pengiriman'] == 'delivery' ? 'Take Away' : 'Makan di Tempat';
                                         $metode_pembayaran = strtoupper($order['metode_pembayaran']);
-                                        $label_lokasi = $order['metode_pengiriman'] == 'delivery' ? 'Alamat Pengiriman' : 'Nomor Meja / Catatan';
+                                        $label_lokasi = $order['metode_pengiriman'] == 'delivery' ? 'Catatan Pesanan' : 'Nomor Meja / Catatan';
 
                                         // Generate Modal HTML Dinamis
                                         $modals_html .= '
@@ -228,10 +233,11 @@ elseif ($filter === 'selesai') $where_clause = "WHERE status = 'selesai'";
                                     <td style="text-align: center;">
                                         <form action="../process/order_action.php" method="POST" style="margin: 0;">
                                             <input type="hidden" name="id_order" value="<?= $order['id_order'] ?>">
-                                            <select name="status" onchange="this.form.submit()" style="<?= $badge_style ?> border: none; padding: 0.25rem 0.5rem; border-radius: 0.5rem; font-size: 0.75rem; font-weight: 700; cursor: pointer; outline: none; text-align: center;">
+                                            <select name="status" data-current="<?= $order['status'] ?>" onchange="handleStatusChange(this)" style="<?= $badge_style ?> border: none; padding: 0.25rem 0.5rem; border-radius: 0.5rem; font-size: 0.75rem; font-weight: 700; cursor: pointer; outline: none; text-align: center;">
                                                 <option value="pending" style="background: white; color: black;" <?= $order['status'] == 'pending' ? 'selected' : '' ?> <?= $order['status'] != 'pending' ? 'disabled' : '' ?>>Menunggu</option>
-                                                <option value="diproses" style="background: white; color: black;" <?= $order['status'] == 'diproses' ? 'selected' : '' ?> <?= $order['status'] == 'selesai' ? 'disabled' : '' ?>>Diproses</option>
-                                                <option value="selesai" style="background: white; color: black;" <?= $order['status'] == 'selesai' ? 'selected' : '' ?>>Selesai</option>
+                                                <option value="diproses" style="background: white; color: black;" <?= $order['status'] == 'diproses' ? 'selected' : '' ?> <?= in_array($order['status'], ['selesai', 'batal']) ? 'disabled' : '' ?>>Diproses</option>
+                                                <option value="selesai" style="background: white; color: black;" <?= $order['status'] == 'selesai' ? 'selected' : '' ?> <?= $order['status'] == 'batal' ? 'disabled' : '' ?>>Selesai</option>
+                                                <option value="batal" style="background: white; color: black;" <?= $order['status'] == 'batal' ? 'selected' : '' ?> <?= in_array($order['status'], ['selesai', 'diproses']) ? 'disabled' : '' ?>>Batal</option>
                                             </select>
                                         </form>
                                     </td>
@@ -260,6 +266,16 @@ elseif ($filter === 'selesai') $where_clause = "WHERE status = 'selesai'";
 <script>
     function openModal(id) { document.getElementById(id).classList.add('active'); }
     function closeModal(id) { document.getElementById(id).classList.remove('active'); }
+
+    function handleStatusChange(selectElement) {
+        if (selectElement.value === 'batal') {
+            if (!confirm('Yakin ingin membatalkan pesanan ini? Stok menu akan dikembalikan ke sistem.')) {
+                selectElement.value = selectElement.getAttribute('data-current'); // Kembalikan opsi ke status semula
+                return;
+            }
+        }
+        selectElement.form.submit();
+    }
 
     document.getElementById('periodeSelect').addEventListener('change', function() {
         const kustomTanggal = document.getElementById('kustomTanggal');

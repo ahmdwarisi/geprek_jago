@@ -102,7 +102,7 @@ if (isset($_SESSION['admin_logged_in'])) {
           </div>
 
           <div class="flex justify-end">
-            <a class="text-xs font-bold transition-colors cursor-pointer text-primary hover:underline" href="#">Lupa Kata Sandi?</a>
+            <button type="button" onclick="document.getElementById('modalLupaPassword').classList.remove('hidden'); document.getElementById('modalLupaPassword').classList.add('flex');" class="text-xs font-bold transition-colors cursor-pointer text-primary hover:underline focus:outline-none">Lupa Kata Sandi?</button>
           </div>
 
           <button type="submit" name="login" class="btn-primary w-full justify-center py-4 mt-2 shadow-lg shadow-emerald-900/10">
@@ -113,7 +113,7 @@ if (isset($_SESSION['admin_logged_in'])) {
 
         <div class="flex flex-col items-center gap-1 pt-3 border-t border-slate-50">
           <p class="text-xs text-slate-400 font-medium">Bermasalah saat masuk?</p>
-          <a class="text-xs font-bold text-primary hover:underline" href="https://wa.me/628123456789">Hubungi Tim IT</a>
+          <a class="text-xs font-bold text-primary hover:underline" href="https://wa.me/6282332325294">Hubungi Tim IT</a>
         </div>
       </div>
     </div>
@@ -124,5 +124,27 @@ if (isset($_SESSION['admin_logged_in'])) {
       </p>
     </footer>
 
+    <!-- Modal Lupa Password -->
+    <div id="modalLupaPassword" class="fixed inset-0 z-50 items-center justify-center hidden bg-black/50 backdrop-blur-sm px-4">
+      <div class="bg-white rounded-3xl p-8 w-full max-w-md shadow-2xl relative">
+        <button type="button" onclick="document.getElementById('modalLupaPassword').classList.add('hidden'); document.getElementById('modalLupaPassword').classList.remove('flex');" class="absolute top-4 right-4 text-slate-400 hover:text-red-500 transition-colors focus:outline-none">
+          <span class="material-symbols-outlined">close</span>
+        </button>
+        <div class="flex flex-col items-center text-center gap-3 mb-6">
+          <div class="w-16 h-16 bg-orange-50 text-orange-500 rounded-full flex items-center justify-center mb-2">
+            <span class="material-symbols-outlined text-3xl">lock_reset</span>
+          </div>
+          <h3 class="text-xl font-bold text-slate-800">Lupa Kata Sandi?</h3>
+          <p class="text-sm text-slate-500 font-medium">Karena ini adalah aplikasi lokal, fitur kirim email otomatis belum tersedia.</p>
+        </div>
+        <div class="bg-slate-50 border border-slate-100 p-4 rounded-xl mb-6">
+          <p class="text-sm text-slate-600 text-center leading-relaxed">Silakan klik dan jalankan file <a href="../buat_admin.php" class="font-bold text-primary hover:underline">buat_admin.php</a> di browser Anda untuk mengatur ulang kata sandi kembali ke bawaan sistem, yaitu <b>admin123</b>.</p>
+        </div>
+        <a href="https://wa.me/6282332325294" target="_blank" class="btn-primary w-full justify-center py-3">
+          <span class="material-symbols-outlined text-[18px]">chat</span>
+          <span class="font-bold">Hubungi Tim IT</span>
+        </a>
+      </div>
+    </div>
   </body>
 </html>

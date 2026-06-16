@@ -256,6 +256,9 @@ if ($query_bestseller && mysqli_num_rows($query_bestseller) > 0) {
                                         } elseif ($order['status'] == 'selesai') {
                                             $badge_style = 'background: #d1fae5; color: #059669;';
                                             $status_text = 'Selesai';
+                                        } elseif ($order['status'] == 'batal') {
+                                            $badge_style = 'background: #fee2e2; color: #dc2626;';
+                                            $status_text = 'Batal';
                                         }
                                 ?>
                                 <tr>

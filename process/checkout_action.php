@@ -9,11 +9,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_SESSION['cart'])) {
     $nama_pelanggan = mysqli_real_escape_string($conn, $_POST['nama_pelanggan'] ?? '');
     $no_hp          = mysqli_real_escape_string($conn, $_POST['no_hp'] ?? '');
     $alamat         = mysqli_real_escape_string($conn, $_POST['alamat'] ?? '');
-    $jarak_km       = floatval($_POST['jarak_km'] ?? 0);
     
     // Sesuaikan nilai form HTML dengan nilai ENUM di database
     $order_method = $_POST['order_method'] ?? 'dine_in';
-    $db_metode_pengiriman = ($order_method === 'delivery') ? 'delivery' : 'makan_di_tempat';
+    $db_metode_pengiriman = ($order_method === 'take_away') ? 'delivery' : 'makan_di_tempat'; // Enum 'delivery' difungsikan sebagai opsi Take Away
     
     $payment_method = $_POST['payment_method'] ?? 'cash';
     $db_metode_pembayaran = ($payment_method === 'bank_transfer') ? 'transfer' : $payment_method;
@@ -30,7 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_SESSION['cart'])) {
         $menu_data[$row['id_menu']] = $row;
     }
 
-    $ongkir = ($db_metode_pengiriman === 'delivery') ? ($jarak_km * 3000) : 0;
+    $ongkir = 0; // Take away tidak dikenakan ongkos kirim
     $total_harga = $subtotal + $ongkir;
 
     // 3. Simpan ke tabel 'orders'

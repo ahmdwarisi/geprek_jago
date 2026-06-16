@@ -91,7 +91,7 @@ CREATE TABLE `orders` (
   `metode_pengiriman` enum('makan_di_tempat','delivery') DEFAULT NULL,
   `metode_pembayaran` enum('qris','ewallet','transfer','cash') DEFAULT NULL,
   `total_harga` int(11) DEFAULT NULL,
-  `status` enum('pending','diproses','selesai') DEFAULT 'pending',
+  `status` enum('pending','diproses','selesai','batal') DEFAULT 'pending',
   `created_at` timestamp NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 

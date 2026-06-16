@@ -54,10 +54,10 @@ include '../includes/header.php';
                     $menu_list = implode(', ', $item_names);
                     
                     $ongkir = $order['total_harga'] - $subtotal_items;
-                    $metode_pengiriman = $order['metode_pengiriman'] == 'delivery' ? 'Delivery' : 'Makan di Tempat';
+                    $metode_pengiriman = $order['metode_pengiriman'] == 'delivery' ? 'Take Away' : 'Makan di Tempat';
                     $metode_pembayaran = strtoupper($order['metode_pembayaran']);
 
-                    $label_lokasi = $order['metode_pengiriman'] == 'delivery' ? 'Alamat Pengiriman' : 'Nomor Meja / Catatan';
+                    $label_lokasi = $order['metode_pengiriman'] == 'delivery' ? 'Catatan Pesanan' : 'Nomor Meja / Catatan';
                     $alamat_pesanan = htmlspecialchars($order['alamat'] ?: '-');
 
                     $modals_html .= '
@@ -112,7 +112,7 @@ include '../includes/header.php';
                             <p class="order-id-label">ID Pesanan</p>
                             <p class="order-id-value">#GJ-<?= str_pad($order['id_order'], 4, '0', STR_PAD_LEFT) ?></p>
                         </div>
-                        <span class="badge-warning" <?= ($order['status'] == 'selesai') ? 'style="background: #d1fae5; color: #059669;"' : '' ?>>
+                        <span class="badge-warning" <?php if($order['status'] == 'selesai') echo 'style="background: #d1fae5; color: #059669;"'; elseif($order['status'] == 'batal') echo 'style="background: #fee2e2; color: #dc2626;"'; elseif($order['status'] == 'diproses') echo 'style="background: #dbeafe; color: #2563eb;"'; ?>>
                             <?= ucfirst($order['status']) ?>
                         </span>
                     </div>
