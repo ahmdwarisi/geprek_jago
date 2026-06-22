@@ -184,7 +184,7 @@ elseif ($filter === 'batal') $where_clause = "WHERE status = 'batal'";
                                             </div>';
                                         }
 
-                                        $metode_pengiriman = $order['metode_pengiriman'] == 'delivery' ? 'Take Away' : 'Makan di Tempat';
+                                        $metode_pengiriman = $order['metode_pengiriman'] == 'delivery' ? 'Take Away' : 'Dine In';
                                         $metode_pembayaran = strtoupper($order['metode_pembayaran']);
                                         $label_lokasi = $order['metode_pengiriman'] == 'delivery' ? 'Catatan Pesanan' : 'Nomor Meja / Catatan';
 

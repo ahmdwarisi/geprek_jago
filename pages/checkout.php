@@ -21,7 +21,6 @@ while ($row = mysqli_fetch_assoc($query)) {
     $cart_items[] = ['row' => $row, 'qty' => $qty, 'total' => $total_harga_item];
 }
 
-$tarif_per_km = 3000; // Mengatur harga per kilometer
 ?>
 
 <main class="container mx-auto px-3 sm:px-4 section">
@@ -65,7 +64,7 @@ $tarif_per_km = 3000; // Mengatur harga per kilometer
                     <label class="radio-card center">
                         <input type="radio" name="order_method" value="dine_in" id="method_dine_in" checked>
                         <div class="radio-content">
-                            <span class="material-symbols-outlined">restaurant</span> Makan di Tempat
+                            <span class="material-symbols-outlined">restaurant</span> Dine In
                         </div>
                     </label>
                     <label class="radio-card center">
@@ -95,7 +94,7 @@ $tarif_per_km = 3000; // Mengatur harga per kilometer
                 <div class="form-group">
                     <label class="form-label" id="alamat_label">Nomor Meja</label>
                     <textarea class="form-input" name="alamat" id="input_alamat" rows="3" placeholder="Contoh: Meja nomor 12" required></textarea>
-                    <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.5rem; font-style: italic;" id="alamat_hint">* Mohon isi nomor meja jika makan di tempat.</p>
+                    <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.5rem; font-style: italic;" id="alamat_hint">* Mohon isi nomor meja untuk Dine In.</p>
                 </div>
             </section>
 
@@ -170,10 +169,6 @@ $tarif_per_km = 3000; // Mengatur harga per kilometer
                         <span>Subtotal</span>
                         <span>Rp <?= number_format($subtotal, 0, ',', '.') ?></span>
                     </div>
-                    <div class="summary-row">
-                        <span>Ongkos Kirim</span>
-                        <span id="ongkir-display" style="color: #059669; font-weight: 600;">Gratis</span>
-                    </div>
                     <div class="summary-total">
                         <span>Total Harga</span>
                         <span id="total-display">Rp <?= number_format($subtotal, 0, ',', '.') ?></span>
@@ -200,12 +195,10 @@ $tarif_per_km = 3000; // Mengatur harga per kilometer
         const inputAlamat = document.getElementById('input_alamat');
         const alamatLabel = document.getElementById('alamat_label');
         const alamatHint = document.getElementById('alamat_hint');
-        const ongkirDisplay = document.getElementById('ongkir-display');
         const totalDisplay = document.getElementById('total-display');
         
         // Variabel PHP dikonversi ke JS
         const subtotal = <?= $subtotal ?>;
-        const tarifPerKm = <?= $tarif_per_km ?>;
 
         function formatRupiah(angka) {
             return 'Rp ' + new Intl.NumberFormat('id-ID').format(angka);
@@ -230,15 +223,10 @@ $tarif_per_km = 3000; // Mengatur harga per kilometer
                 alamatLabel.textContent = 'Nomor Meja';
                 inputAlamat.placeholder = 'Contoh: Meja nomor 12';
                 inputAlamat.required = true;
-                alamatHint.textContent = '* Mohon isi nomor meja tempat Anda makan.';
+                alamatHint.textContent = '* Mohon isi nomor meja untuk Dine In.';
             }
             
-            ongkir = 0;
-            ongkirDisplay.textContent = 'Gratis';
-            ongkirDisplay.style.color = '#059669';
-            ongkirDisplay.style.fontWeight = '600';
-
-            const total = subtotal + ongkir;
+            const total = subtotal;
             totalDisplay.textContent = formatRupiah(total);
         }
 

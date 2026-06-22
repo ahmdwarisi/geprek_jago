@@ -29,8 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_SESSION['cart'])) {
         $menu_data[$row['id_menu']] = $row;
     }
 
-    $ongkir = 0; // Take away tidak dikenakan ongkos kirim
-    $total_harga = $subtotal + $ongkir;
+    $total_harga = $subtotal;
 
     // 3. Simpan ke tabel 'orders'
     $query_order = "INSERT INTO orders (nama_pelanggan, no_hp, alamat, metode_pengiriman, metode_pembayaran, total_harga, status) 

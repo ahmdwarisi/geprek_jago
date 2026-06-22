@@ -54,7 +54,7 @@ include '../includes/header.php';
                     $menu_list = implode(', ', $item_names);
                     
                     $ongkir = $order['total_harga'] - $subtotal_items;
-                    $metode_pengiriman = $order['metode_pengiriman'] == 'delivery' ? 'Take Away' : 'Makan di Tempat';
+                    $metode_pengiriman = $order['metode_pengiriman'] == 'delivery' ? 'Take Away' : 'Dine In';
                     $metode_pembayaran = strtoupper($order['metode_pembayaran']);
 
                     $label_lokasi = $order['metode_pengiriman'] == 'delivery' ? 'Catatan Pesanan' : 'Nomor Meja / Catatan';
